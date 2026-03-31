@@ -3,13 +3,16 @@
 ---
 
 <section class="hero">
-  <!-- 装飾ライン（タイピング完了で表示） -->
+  <!-- 装飾ライン -->
   <svg class="hero__line hero__line--top" id="hero-line-top" viewBox="0 0 1400 2" preserveAspectRatio="none">
     <line x1="0" y1="1" x2="1400" y2="1" stroke="#e2e0db" stroke-width="1" />
   </svg>
   <svg class="hero__line hero__line--bottom" id="hero-line-bottom" viewBox="0 0 1400 2" preserveAspectRatio="none">
     <line x1="0" y1="1" x2="1400" y2="1" stroke="#e2e0db" stroke-width="1" />
   </svg>
+
+  <!-- 白抜きエリア（ライン間） -->
+  <div class="hero__clearzone" id="hero-clearzone"></div>
 
   <div class="hero__inner">
     <div class="hero__label">
@@ -34,6 +37,7 @@
   const cursorLg = document.getElementById('hero-cursor-lg')!;
   const lineTop = document.getElementById('hero-line-top')!;
   const lineBottom = document.getElementById('hero-line-bottom')!;
+  const clearzone = document.getElementById('hero-clearzone')!;
   const scrollHint = document.getElementById('hero-scroll-hint')!;
 
   const ROLE_TEXT = 'Engineer & Designer';
@@ -41,6 +45,8 @@
   const TYPE_SPEED = 60;
   const PAUSE = 400;
 
+  // 最初はカーソルとテキスト非表示
+  cursorSm.style.opacity = '0';
   cursorLg.style.opacity = '0';
 
   function typeText(el: HTMLElement, text: string, speed: number): Promise<void> {
@@ -57,27 +63,39 @@
     });
   }
 
-  async function startTyping(): Promise<void> {
+  function wait(ms: number): Promise<void> {
+    return new Promise((r) => setTimeout(r, ms));
+  }
+
+  async function startOpening(): Promise<void> {
     document.body.style.overflow = 'hidden';
 
-    await new Promise((r) => setTimeout(r, 400));
+    // ① ラインが走る
+    await wait(400);
+    lineTop.classList.add('is-visible');
+    lineBottom.classList.add('is-visible');
+
+    // ② 白抜きエリアが現れる
+    await wait(600);
+    clearzone.classList.add('is-visible');
+
+    // ③ タイプライター開始
+    await wait(400);
+    cursorSm.style.opacity = '1';
     await typeText(roleEl, ROLE_TEXT, TYPE_SPEED);
-    await new Promise((r) => setTimeout(r, PAUSE));
+    await wait(PAUSE);
     cursorSm.style.display = 'none';
     cursorLg.style.opacity = '1';
     await typeText(nameEl, NAME_TEXT, TYPE_SPEED + 40);
     cursorLg.classList.add('is-done');
 
-    // 完了の合図: ラインが走る + スクロールヒント表示
-    await new Promise((r) => setTimeout(r, 300));
-    lineTop.classList.add('is-visible');
-    lineBottom.classList.add('is-visible');
-    await new Promise((r) => setTimeout(r, 600));
+    // ④ スクロール解除
+    await wait(500);
     scrollHint.classList.add('is-visible');
     document.body.style.overflow = '';
   }
 
-  startTyping();
+  startOpening();
 </script>
 
 <style>
@@ -98,15 +116,32 @@
     height: 2px;
     z-index: 1;
     clip-path: inset(0 100% 0 0);
-    transition: clip-path 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: clip-path 1s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .hero__line.is-visible {
     clip-path: inset(0 0 0 0);
   }
 
-  .hero__line--top { top: 30%; }
-  .hero__line--bottom { bottom: 20%; transition-delay: 0.15s; }
+  .hero__line--top { top: 35%; }
+  .hero__line--bottom { bottom: 35%; transition-delay: 0.12s; }
+
+  /* 白抜きエリア */
+  .hero__clearzone {
+    position: absolute;
+    left: 0;
+    top: 35%;
+    bottom: 35%;
+    width: 100%;
+    background: #fff;
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+  }
+
+  .hero__clearzone.is-visible {
+    opacity: 1;
+  }
 
   .hero__inner {
     position: relative;
@@ -133,6 +168,7 @@
     color: var(--color-text);
     animation: blink 0.8s step-end infinite;
     user-select: none;
+    transition: opacity 0.2s ease;
   }
 
   .hero__title-row {
@@ -186,6 +222,7 @@
     color: var(--color-text-muted);
     letter-spacing: 0.2em;
     animation: hint-bounce 2s ease-in-out infinite;
+    display: inline-block;
   }
 
   @keyframes blink {
@@ -200,5 +237,8 @@
 
   @media (max-width: 768px) {
     .hero { padding: 3rem 1.5rem; }
+    .hero__line--top { top: 30%; }
+    .hero__line--bottom { bottom: 30%; }
+    .hero__clearzone { top: 30%; bottom: 30%; }
   }
 </style>

@@ -162,27 +162,91 @@ const works = [
   </div>
 </section>
 
+<!-- モバイル用モーダル -->
+{
+  works.map((work) => (
+    <div class="works__modal" id={`modal-${work.id}`}>
+      <div class="works__modal-backdrop" data-modal-close />
+      <div class="works__modal-content">
+        <button class="works__modal-close" data-modal-close type="button">&times;</button>
+        <span class="works__bubble-period">{work.period}</span>
+        <h4 class="works__bubble-title">{work.title}</h4>
+        <p class="works__bubble-summary">{work.summary}</p>
+        <ul class="works__bubble-list">
+          {work.details.map((d) => <li>{d}</li>)}
+        </ul>
+        {work.tech.length > 0 && (
+          <div class="works__bubble-tech">
+            {work.tech.map((t) => {
+              const info = techMap[t];
+              return info ? (
+                <span class="works__bubble-icon" style={`color: ${info.color}`} title={t}>
+                  <Icon name={info.icon} />
+                </span>
+              ) : null;
+            })}
+          </div>
+        )}
+        {'client' in work && work.client && (
+          <a
+            href={work.client.url}
+            class="works__bubble-link"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {work.client.name} →
+          </a>
+        )}
+      </div>
+    </div>
+  ))
+}
+
 <script>
+  const isMobile = () => window.innerWidth <= 768;
+
   document.querySelectorAll<HTMLButtonElement>('[data-work]').forEach((btn) => {
     btn.addEventListener('click', () => {
       const id = btn.dataset.work;
-      const bubble = document.getElementById(`bubble-${id}`);
-      const isOpen = bubble?.classList.contains('is-open');
 
-      // 全部閉じる
-      document.querySelectorAll('.works__bubble.is-open').forEach((b) => {
-        b.classList.remove('is-open');
-      });
-      document.querySelectorAll('.works__item.is-active').forEach((b) => {
-        b.classList.remove('is-active');
-      });
+      if (isMobile()) {
+        // モバイル: モーダル表示
+        const modal = document.getElementById(`modal-${id}`);
+        modal?.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+      } else {
+        // PC: 右カラム吹き出し
+        const bubble = document.getElementById(`bubble-${id}`);
+        const isOpen = bubble?.classList.contains('is-open');
 
-      // トグル
-      if (!isOpen) {
-        bubble?.classList.add('is-open');
-        btn.classList.add('is-active');
+        document.querySelectorAll('.works__bubble.is-open').forEach((b) => {
+          b.classList.remove('is-open');
+        });
+        document.querySelectorAll('.works__item.is-active').forEach((b) => {
+          b.classList.remove('is-active');
+        });
+
+        if (!isOpen) {
+          bubble?.classList.add('is-open');
+          btn.classList.add('is-active');
+        }
       }
     });
+  });
+
+  // モーダルを閉じる
+  document.querySelectorAll('[data-modal-close]').forEach((el) => {
+    el.addEventListener('click', () => {
+      el.closest('.works__modal')?.classList.remove('is-open');
+      document.body.style.overflow = '';
+    });
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      document.querySelector('.works__modal.is-open')?.classList.remove('is-open');
+      document.body.style.overflow = '';
+    }
   });
 </script>
 
@@ -360,9 +424,63 @@ const works = [
     opacity: 0.7;
   }
 
+  /* ─── Mobile Modal ─── */
+  .works__modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .works__modal.is-open {
+    display: flex;
+  }
+
+  .works__modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(4px);
+  }
+
+  .works__modal-content {
+    position: relative;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 2rem;
+    width: 90%;
+    max-width: 400px;
+    max-height: 80vh;
+    overflow-y: auto;
+    animation: bubble-in 0.3s ease;
+  }
+
+  .works__modal-close {
+    position: absolute;
+    top: 0.75rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    line-height: 1;
+  }
+
+  .works__modal-close:hover {
+    color: var(--color-text);
+  }
+
   @media (max-width: 768px) {
     .works__two-col {
       grid-template-columns: 1fr;
+    }
+
+    .works__bubble-area {
+      display: none;
     }
 
     .works__item {
