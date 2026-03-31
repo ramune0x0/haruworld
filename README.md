@@ -1,43 +1,26 @@
-# Astro Starter Kit: Minimal
+# Haruworld
 
-```sh
-pnpm create astro@latest -- --template minimal
-```
+ポートフォリオサイト [haruworld.nymphaea.dev](https://haruworld.nymphaea.dev)
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Tech Stack
 
-## 🚀 Project Structure
+- [Astro](https://astro.build/) - 静的サイトジェネレーター
+- Vanilla CSS (Scoped Styles + CSS Variables)
+- [astro-icon](https://www.astroicon.dev/) + [Iconify](https://iconify.design/) (Simple Icons / MDI)
+- Cloudflare Pages (Hosting)
 
-Inside of your Astro project, you'll see the following folders and files:
+## Fonts
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+- [Courier Prime](https://fonts.google.com/specimen/Courier+Prime) - メインフォント (タイプライター)
+- [VT323](https://fonts.google.com/specimen/VT323) - セクション番号・ラベル (ターミナル)
+- [M PLUS 1 Code](https://fonts.google.com/specimen/M+PLUS+1+Code) - 日本語見出し (等幅)
+- [Noto Sans JP](https://fonts.google.com/noto/specimen/Noto+Sans+JP) - 日本語本文
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Commands
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+| Command | Action |
+|:--|:--|
+| `pnpm install` | 依存関係のインストール |
+| `pnpm dev` | 開発サーバー起動 (`localhost:4321`) |
+| `pnpm build` | 本番ビルド (`./dist/`) |
+| `pnpm preview` | ビルド結果のプレビュー |
