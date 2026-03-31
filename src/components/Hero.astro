@@ -15,13 +15,15 @@
   <div class="hero__clearzone" id="hero-clearzone"></div>
 
   <div class="hero__inner">
-    <div class="hero__label">
-      <span class="hero__role" id="hero-role"></span>
-      <span class="hero__cursor-sm" id="hero-cursor-sm">|</span>
-    </div>
-    <div class="hero__title-row">
-      <h1 class="hero__name" id="hero-name"></h1>
-      <span class="hero__cursor-lg" id="hero-cursor-lg">|</span>
+    <div class="hero__content">
+      <div class="hero__label">
+        <span class="hero__role" id="hero-role"></span>
+        <span class="hero__cursor-sm" id="hero-cursor-sm">|</span>
+      </div>
+      <div class="hero__title-row">
+        <h1 class="hero__name" id="hero-name"></h1>
+        <span class="hero__cursor-lg" id="hero-cursor-lg">|</span>
+      </div>
     </div>
   </div>
 
@@ -39,7 +41,6 @@
   const lineBottom = document.getElementById('hero-line-bottom')!;
   const clearzone = document.getElementById('hero-clearzone')!;
   const scrollHint = document.getElementById('hero-scroll-hint')!;
-
   const ROLE_TEXT = 'Engineer & Designer';
   const NAME_TEXT = 'Haruworld';
   const TYPE_SPEED = 60;

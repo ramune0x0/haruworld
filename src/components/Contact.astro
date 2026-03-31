@@ -62,9 +62,10 @@ const links = [
 <style>
   .contact__list {
     display: flex;
-    gap: 3rem;
+    flex-wrap: wrap;
+    gap: 2.5rem;
     align-items: center;
-    min-height: 200px;
+    justify-content: center;
   }
 
   .contact__item {
@@ -72,13 +73,13 @@ const links = [
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 80px;
-    height: 80px;
+    width: 64px;
+    height: 64px;
   }
 
   .contact__icon {
-    width: 52px;
-    height: 52px;
+    width: 48px;
+    height: 48px;
     color: var(--color-text-muted);
     transition: color 0.3s ease;
   }

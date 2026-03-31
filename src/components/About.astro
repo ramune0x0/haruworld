@@ -14,15 +14,9 @@
       <span class="section__desc">私のこと</span>
     </div>
     <div class="about__right" data-animate>
-      <img
-        class="about__photo"
-        src="https://github.com/ramune0x0.png"
-        alt="Avatar"
-        width="200"
-        height="200"
-      />
-      <div class="about__text">
-        <h2 class="about__title">Haru</h2>
+      <div class="about__content">
+        <div class="about__text">
+          <h2 class="about__title">Haru</h2>
           <p>
             42 Tokyo でC / C++ を中心に低レイヤーを学びながら、
             インターンや受託開発でフロントエンドから業務自動化まで幅広く手を動かしています。
@@ -31,6 +25,14 @@
             未経験の技術でも飛び込んで、動くものを作って届ける。
             領域を限定せず、必要なことをやるのが自分のスタイルです。
           </p>
+        </div>
+        <img
+          class="about__photo"
+          src="https://github.com/ramune0x0.png"
+          alt="Haru"
+          width="220"
+          height="280"
+        />
       </div>
     </div>
   </div>
@@ -63,19 +65,14 @@
     height: 2px;
   }
 
-  .about__right {
-    position: relative;
+  .about__content {
+    display: flex;
+    align-items: stretch;
+    gap: 2.5rem;
   }
 
-  .about__photo {
-    position: absolute;
-    right: calc(100% + 2.5rem);
-    top: 50%;
-    transform: translateY(-50%);
-    width: 200px;
-    height: 260px;
-    border-radius: 4px;
-    object-fit: cover;
+  .about__text {
+    flex: 1;
   }
 
   .about__title {
@@ -97,13 +94,24 @@
     margin-bottom: 0;
   }
 
+  .about__photo {
+    width: 220px;
+    height: auto;
+    min-height: 280px;
+    object-fit: cover;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+
   @media (max-width: 768px) {
+    .about__content {
+      flex-direction: column-reverse;
+    }
+
     .about__photo {
-      position: static;
-      transform: none;
-      width: 160px;
+      width: 100%;
       height: 200px;
-      margin-bottom: 1.5rem;
+      min-height: auto;
     }
   }
 </style>
