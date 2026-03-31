@@ -13,37 +13,34 @@ const groups = [
     ],
   },
   {
-    label: 'Frameworks',
+    label: 'Frameworks / Platforms',
     items: [
       { name: 'Next.js', icon: 'simple-icons:nextdotjs', color: '#000000' },
       { name: 'React', icon: 'simple-icons:react', color: '#61DAFB' },
-      { name: 'Express', icon: 'simple-icons:express', color: '#000000' },
       { name: 'Astro', icon: 'simple-icons:astro', color: '#BC52EE' },
       { name: 'Unity', icon: 'simple-icons:unity', color: '#000000' },
-    ],
-  },
-  {
-    label: 'Infrastructure',
-    items: [
-      { name: 'Linux', icon: 'simple-icons:linux', color: '#FCC624' },
-      { name: 'Docker', icon: 'simple-icons:docker', color: '#2496ED' },
-      { name: 'Git', icon: 'simple-icons:git', color: '#F05032' },
+      { name: 'Vercel', icon: 'simple-icons:vercel', color: '#000000' },
       { name: 'Supabase', icon: 'simple-icons:supabase', color: '#3FCF8E' },
     ],
   },
   {
     label: 'Tools',
     items: [
+      { name: 'Git', icon: 'simple-icons:git', color: '#F05032' },
+      { name: 'Linux', icon: 'simple-icons:linux', color: '#FCC624' },
       { name: 'n8n', icon: 'simple-icons:n8n', color: '#EA4B71' },
-      { name: 'Claude', icon: 'simple-icons:anthropic', color: '#D97757' },
+      { name: 'Claude', icon: 'simple-icons:claude', color: '#D97757' },
       { name: 'Figma', icon: 'simple-icons:figma', color: '#F24E1E' },
-      { name: 'Google', icon: 'simple-icons:google', color: '#4285F4' },
+      { name: 'Google APIs', icon: 'simple-icons:google', color: '#4285F4' },
     ],
   },
 ] as const;
 ---
 
-<section id="skills" class="section">
+<section id="skills" class="section" style="position: relative;">
+  <svg style="position: absolute; top: 0; left: 10%; width: 40%; height: 2px;" viewBox="0 0 1400 2" preserveAspectRatio="none">
+    <line x1="0" y1="1" x2="1400" y2="1" stroke="#e2e0db" stroke-width="1" />
+  </svg>
   <div class="section__split">
     <div class="section__left">
       <span class="section__number">03</span>

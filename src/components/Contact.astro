@@ -9,6 +9,18 @@ const links = [
     url: 'https://github.com/ramune0x0',
   },
   {
+    name: 'X',
+    icon: 'simple-icons:x',
+    color: '#000000',
+    url: 'https://x.com/_ramune0x0',
+  },
+  {
+    name: 'Instagram',
+    icon: 'simple-icons:instagram',
+    color: '#E4405F',
+    url: '#',
+  },
+  {
     name: 'Email',
     icon: 'mdi:email-outline',
     color: '#1a1a1a',
@@ -32,8 +44,8 @@ const links = [
                 href={link.url}
                 class="contact__item"
                 style={`--brand-color: ${link.color}`}
-                target={link.url.startsWith('http') ? '_blank' : undefined}
-                rel={link.url.startsWith('http') ? 'noopener noreferrer' : undefined}
+                target={link.url.startsWith('mailto') ? undefined : '_blank'}
+                rel={link.url.startsWith('mailto') ? undefined : 'noopener noreferrer'}
               >
                 <Icon name={link.icon} class="contact__icon" />
                 <span class="contact__name">{link.name}</span>
@@ -49,7 +61,9 @@ const links = [
 <style>
   .contact__list {
     display: flex;
-    gap: 2.5rem;
+    gap: 3rem;
+    align-items: center;
+    min-height: 200px;
   }
 
   .contact__item {
@@ -57,13 +71,13 @@ const links = [
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 64px;
-    height: 64px;
+    width: 80px;
+    height: 80px;
   }
 
   .contact__icon {
-    width: 40px;
-    height: 40px;
+    width: 52px;
+    height: 52px;
     color: var(--color-text-muted);
     transition: color 0.3s ease;
   }
@@ -78,7 +92,7 @@ const links = [
     left: 50%;
     transform: translateX(-50%);
     font-family: var(--font-main);
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     color: var(--brand-color);
     white-space: nowrap;
     opacity: 0;

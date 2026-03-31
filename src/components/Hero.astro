@@ -3,43 +3,49 @@
 ---
 
 <section class="hero">
-  <canvas class="hero__canvas" id="hero-canvas"></canvas>
+  <!-- 装飾ライン（タイピング完了で表示） -->
+  <svg class="hero__line hero__line--top" id="hero-line-top" viewBox="0 0 1400 2" preserveAspectRatio="none">
+    <line x1="0" y1="1" x2="1400" y2="1" stroke="#e2e0db" stroke-width="1" />
+  </svg>
+  <svg class="hero__line hero__line--bottom" id="hero-line-bottom" viewBox="0 0 1400 2" preserveAspectRatio="none">
+    <line x1="0" y1="1" x2="1400" y2="1" stroke="#e2e0db" stroke-width="1" />
+  </svg>
+
   <div class="hero__inner">
-    <div class="hero__text">
-      <p class="hero__role" id="hero-role"></p>
-      <h1 class="hero__name" id="hero-name"></h1>
-      <span class="hero__cursor" id="hero-cursor">|</span>
+    <div class="hero__label">
+      <span class="hero__role" id="hero-role"></span>
+      <span class="hero__cursor-sm" id="hero-cursor-sm">|</span>
     </div>
-    <img
-      class="hero__avatar"
-      src="https://github.com/ramune0x0.png"
-      alt="Haru"
-      width="200"
-      height="200"
-    />
+    <div class="hero__title-row">
+      <h1 class="hero__name" id="hero-name"></h1>
+      <span class="hero__cursor-lg" id="hero-cursor-lg">|</span>
+    </div>
+  </div>
+
+  <div class="hero__scroll-hint" id="hero-scroll-hint">
+    <span>Scroll</span>
   </div>
 </section>
 
 <script>
-  // ── タイプライターアニメーション ──
   const roleEl = document.getElementById('hero-role')!;
   const nameEl = document.getElementById('hero-name')!;
-  const cursorEl = document.getElementById('hero-cursor')!;
+  const cursorSm = document.getElementById('hero-cursor-sm')!;
+  const cursorLg = document.getElementById('hero-cursor-lg')!;
+  const lineTop = document.getElementById('hero-line-top')!;
+  const lineBottom = document.getElementById('hero-line-bottom')!;
+  const scrollHint = document.getElementById('hero-scroll-hint')!;
 
   const ROLE_TEXT = 'Engineer & Designer';
-  const NAME_TEXT = 'Haru';
+  const NAME_TEXT = 'Haruworld';
   const TYPE_SPEED = 60;
   const PAUSE = 400;
 
-  function typeText(
-    el: HTMLElement,
-    text: string,
-    speed: number,
-  ): Promise<void> {
+  cursorLg.style.opacity = '0';
+
+  function typeText(el: HTMLElement, text: string, speed: number): Promise<void> {
     return new Promise((resolve) => {
       let i = 0;
-      // カーソルをこの要素の横に移動
-      el.after(cursorEl);
       const interval = setInterval(() => {
         el.textContent += text[i];
         i++;
@@ -52,144 +58,65 @@
   }
 
   async function startTyping(): Promise<void> {
-    await new Promise((r) => setTimeout(r, 600));
+    document.body.style.overflow = 'hidden';
+
+    await new Promise((r) => setTimeout(r, 400));
     await typeText(roleEl, ROLE_TEXT, TYPE_SPEED);
     await new Promise((r) => setTimeout(r, PAUSE));
+    cursorSm.style.display = 'none';
+    cursorLg.style.opacity = '1';
     await typeText(nameEl, NAME_TEXT, TYPE_SPEED + 40);
-    // タイピング完了後、カーソルは点滅のみ
-    cursorEl.classList.add('is-done');
+    cursorLg.classList.add('is-done');
+
+    // 完了の合図: ラインが走る + スクロールヒント表示
+    await new Promise((r) => setTimeout(r, 300));
+    lineTop.classList.add('is-visible');
+    lineBottom.classList.add('is-visible');
+    await new Promise((r) => setTimeout(r, 600));
+    scrollHint.classList.add('is-visible');
+    document.body.style.overflow = '';
   }
 
   startTyping();
-
-  // ── Canvas パーティクル ──
-  const canvas = document.getElementById('hero-canvas') as HTMLCanvasElement;
-  const ctx = canvas.getContext('2d')!;
-  let mouse = { x: -1000, y: -1000 };
-  const PARTICLE_COUNT = 80;
-  const MOUSE_RADIUS = 150;
-
-  interface Particle {
-    x: number;
-    y: number;
-    baseX: number;
-    baseY: number;
-    size: number;
-    alpha: number;
-  }
-
-  let particles: Particle[] = [];
-
-  function resize(): void {
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
-    initParticles();
-  }
-
-  function initParticles(): void {
-    particles = Array.from({ length: PARTICLE_COUNT }, () => {
-      const x = Math.random() * canvas.width;
-      const y = Math.random() * canvas.height;
-      return {
-        x,
-        y,
-        baseX: x,
-        baseY: y,
-        size: Math.random() * 1.5 + 0.5,
-        alpha: Math.random() * 0.3 + 0.05,
-      };
-    });
-  }
-
-  function draw(): void {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    for (const p of particles) {
-      const dx = mouse.x - p.x;
-      const dy = mouse.y - p.y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-
-      const proximity = Math.max(0, 1 - dist / MOUSE_RADIUS);
-      const alpha = p.alpha + proximity * 0.6;
-
-      if (dist < MOUSE_RADIUS) {
-        p.x -= dx * 0.02;
-        p.y -= dy * 0.02;
-      } else {
-        p.x += (p.baseX - p.x) * 0.02;
-        p.y += (p.baseY - p.y) * 0.02;
-      }
-
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(123, 104, 168, ${alpha})`;
-      ctx.fill();
-    }
-
-    requestAnimationFrame(draw);
-  }
-
-  canvas.addEventListener('mousemove', (e) => {
-    const rect = canvas.getBoundingClientRect();
-    mouse.x = e.clientX - rect.left;
-    mouse.y = e.clientY - rect.top;
-  });
-
-  canvas.addEventListener('mouseleave', () => {
-    mouse = { x: -1000, y: -1000 };
-  });
-
-  window.addEventListener('resize', resize);
-  resize();
-  draw();
 </script>
 
 <style>
   .hero {
-    min-height: 100dvh;
+    height: 100dvh;
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     position: relative;
     padding: 4rem;
     overflow: hidden;
   }
 
-  .hero__canvas {
+  /* 装飾ライン */
+  .hero__line {
     position: absolute;
-    inset: 0;
+    left: 0;
     width: 100%;
-    height: 100%;
-    z-index: 0;
+    height: 2px;
+    z-index: 1;
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path 0.8s cubic-bezier(0.16, 1, 0.3, 1);
   }
+
+  .hero__line.is-visible {
+    clip-path: inset(0 0 0 0);
+  }
+
+  .hero__line--top { top: 30%; }
+  .hero__line--bottom { bottom: 20%; transition-delay: 0.15s; }
 
   .hero__inner {
     position: relative;
-    z-index: 1;
-    width: 100%;
+    z-index: 2;
+  }
+
+  .hero__label {
+    margin-bottom: 1.5rem;
     display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 3rem;
-  }
-
-  .hero__avatar {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    flex-shrink: 0;
-    opacity: 0;
-    animation: hero-in 0.8s ease forwards 0.1s;
-  }
-
-  @keyframes hero-in {
-    from {
-      opacity: 0;
-      transform: translateY(16px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    align-items: center;
   }
 
   .hero__role {
@@ -197,60 +124,81 @@
     font-size: 0.85rem;
     font-weight: 400;
     color: var(--color-text-muted);
-    letter-spacing: 0.15em;
-    min-height: 1.5em;
-    margin-bottom: 0.75rem;
+    letter-spacing: 0.2em;
   }
 
-  .hero__name {
+  .hero__cursor-sm {
     font-family: var(--font-main);
-    font-size: clamp(4rem, 12vw, 10rem);
-    font-weight: 700;
+    font-size: 0.85rem;
     color: var(--color-text);
-    letter-spacing: -0.04em;
-    line-height: 0.9;
-    min-height: 1em;
-    display: inline;
-  }
-
-  .hero__cursor {
-    font-family: var(--font-main);
-    font-size: clamp(4rem, 12vw, 10rem);
-    font-weight: 400;
-    color: var(--color-text);
-    line-height: 0.9;
     animation: blink 0.8s step-end infinite;
     user-select: none;
   }
 
-  .hero__cursor.is-done {
+  .hero__title-row {
+    display: flex;
+    align-items: baseline;
+  }
+
+  .hero__name {
+    font-family: var(--font-main);
+    font-size: clamp(3.5rem, 11vw, 9rem);
+    font-weight: 700;
+    color: var(--color-text);
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+
+  .hero__cursor-lg {
+    font-family: var(--font-main);
+    font-size: clamp(3.5rem, 11vw, 9rem);
+    font-weight: 400;
+    color: var(--color-text);
+    line-height: 1;
+    animation: blink 0.8s step-end infinite;
+    user-select: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .hero__cursor-lg.is-done {
     animation: blink 1.2s step-end infinite;
-    opacity: 0.5;
+    opacity: 0.3;
+  }
+
+  /* スクロールヒント */
+  .hero__scroll-hint {
+    position: absolute;
+    bottom: 3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    z-index: 2;
+  }
+
+  .hero__scroll-hint.is-visible {
+    opacity: 1;
+  }
+
+  .hero__scroll-hint span {
+    font-family: var(--font-main);
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    letter-spacing: 0.2em;
+    animation: hint-bounce 2s ease-in-out infinite;
   }
 
   @keyframes blink {
-    0%,
-    100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0;
-    }
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  @keyframes hint-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(4px); }
   }
 
   @media (max-width: 768px) {
-    .hero {
-      padding: 3rem 1.5rem;
-    }
-
-    .hero__inner {
-      flex-direction: column-reverse;
-      align-items: flex-start;
-    }
-
-    .hero__avatar {
-      width: 140px;
-      height: 140px;
-    }
+    .hero { padding: 3rem 1.5rem; }
   }
 </style>

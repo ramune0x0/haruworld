@@ -4,7 +4,7 @@ interface Props {
   description?: string;
 }
 
-const { title, description = 'Haru — Designer & Engineer' } = Astro.props;
+const { title, description = 'Haruworld — Engineer & Designer' } = Astro.props;
 ---
 
 <!doctype html>
@@ -69,7 +69,7 @@ const { title, description = 'Haru — Designer & Engineer' } = Astro.props;
 
       sections.forEach((section) => navObserver.observe(section));
 
-      // セクション番号の色変化（画面に少しでも入ったら発火）
+      // セクション番号の色変化（セクションの中央付近で発火）
       const numberObserver = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
@@ -79,7 +79,7 @@ const { title, description = 'Haru — Designer & Engineer' } = Astro.props;
             }
           });
         },
-        { threshold: 0.1 },
+        { rootMargin: '-30% 0px -50% 0px' },
       );
 
       sections.forEach((section) => numberObserver.observe(section));

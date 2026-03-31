@@ -10,7 +10,7 @@
   --font-jp: 'M PLUS 1 Code', monospace;
   --font-body: 'Noto Sans JP', sans-serif;
   --max-width: 960px;
-  --nav-width: 60px;
+  --nav-width: 72px;
   --section-padding: 8rem 4rem;
 }
 
@@ -70,8 +70,11 @@ h3 {
 
 /* ─── Section ─── */
 .section {
+  min-height: 100dvh;
   padding: var(--section-padding);
   position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .section__inner {
@@ -84,6 +87,7 @@ h3 {
   grid-template-columns: 1fr 2fr;
   gap: 4rem;
   align-items: start;
+  width: 100%;
 }
 
 .section__left {

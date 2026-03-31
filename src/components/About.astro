@@ -2,34 +2,98 @@
 
 ---
 
-<section id="about" class="section">
+<section id="about" class="section about-section">
+  <svg class="about__deco-line" viewBox="0 0 1400 2" preserveAspectRatio="none">
+    <line x1="0" y1="1" x2="1400" y2="1" stroke="#e2e0db" stroke-width="1" />
+  </svg>
+
   <div class="section__split">
     <div class="section__left">
       <span class="section__number">01</span>
       <span class="section__label">About</span>
     </div>
     <div class="about__right" data-animate>
-      <p>
-        42 Tokyo でC / C++ を中心に低レイヤーを学びながら、<br />
-        インターンや受託開発でフロントエンドから業務自動化まで幅広く手を動かしています。
-      </p>
-      <p>
-        未経験の技術でも飛び込んで、動くものを作って届ける。<br />
-        領域を限定せず、必要なことをやるのが自分のスタイルです。
-      </p>
+      <div class="about__columns">
+        <img
+          class="about__photo"
+          src="https://github.com/ramune0x0.png"
+          alt="Avatar"
+          width="200"
+          height="200"
+        />
+        <div class="about__text">
+          <h2 class="about__title">Haru</h2>
+          <p>
+            42 Tokyo でC / C++ を中心に低レイヤーを学びながら、
+            インターンや受託開発でフロントエンドから業務自動化まで幅広く手を動かしています。
+          </p>
+          <p>
+            未経験の技術でも飛び込んで、動くものを作って届ける。
+            領域を限定せず、必要なことをやるのが自分のスタイルです。
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
 <style>
-  .about__right p {
+  .about-section { position: relative; }
+
+  .about__deco-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 60%;
+    height: 2px;
+  }
+
+  .about__columns {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+  }
+
+  .about__photo {
+    width: 200px;
+    height: 200px;
+    border-radius: 4px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  .about__title {
+    font-family: var(--font-main);
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+  }
+
+  .about__text {
+    flex: 1;
+  }
+
+  .about__text p {
     font-size: 0.95rem;
     color: var(--color-text-muted);
     line-height: 2;
     margin-bottom: 1rem;
   }
 
-  .about__right p:last-child {
+  .about__text p:last-child {
     margin-bottom: 0;
+  }
+
+  @media (max-width: 768px) {
+    .about__columns {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .about__photo {
+      width: 160px;
+      height: 160px;
+    }
   }
 </style>
