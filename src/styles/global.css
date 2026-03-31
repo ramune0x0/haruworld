@@ -1,3 +1,30 @@
+/* ─── Background Lines ─── */
+.bg-lines {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.25;
+}
+
+.bg-lines__path {
+  stroke-dasharray: 2000;
+  stroke-dashoffset: 2000;
+  animation: line-flow 20s ease-in-out infinite alternate;
+}
+
+.bg-lines__path--1 { animation-delay: 0s; }
+.bg-lines__path--2 { animation-delay: -6s; }
+.bg-lines__path--3 { animation-delay: -12s; }
+
+@keyframes line-flow {
+  0% { stroke-dashoffset: 2000; }
+  50% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: -2000; }
+}
+
 /* ─── CSS Variables ─── */
 :root {
   --color-bg: #fafaf8;
@@ -31,7 +58,7 @@ body {
   font-family: var(--font-body);
   font-weight: 400;
   color: var(--color-text);
-  background-color: var(--color-bg);
+  background-color: #f0ede8;
   line-height: 1.8;
   word-break: auto-phrase;
   overflow-wrap: anywhere;
@@ -81,6 +108,8 @@ h3 {
   position: relative;
   display: flex;
   align-items: center;
+  z-index: 1;
+  align-items: center;
 }
 
 .section__inner {
@@ -119,12 +148,20 @@ h3 {
 
 .section__label {
   font-family: var(--font-terminal);
-  font-size: 0.85rem;
+  font-size: 1.25rem;
   font-weight: 400;
   color: var(--color-text-muted);
   letter-spacing: 0.2em;
   text-transform: uppercase;
   display: block;
+  margin-bottom: 0.5rem;
+}
+
+.section__desc {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  line-height: 1.6;
 }
 
 /* ─── Scroll Animation ─── */
