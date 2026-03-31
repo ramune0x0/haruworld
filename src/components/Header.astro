@@ -1,0 +1,66 @@
+---
+const navItems = [
+  { label: 'About', href: '#about' },
+  { label: 'Works', href: '#works' },
+  { label: 'Skills', href: '#skills' },
+  { label: 'Contact', href: '#contact' },
+] as const;
+---
+
+<!-- 右端の縦ナビ -->
+<nav class="sidenav">
+  <div class="sidenav__links">
+    {
+      navItems.map((item) => (
+        <a href={item.href} class="sidenav__link">
+          {item.label}
+        </a>
+      ))
+    }
+  </div>
+</nav>
+
+<style>
+  .sidenav {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: var(--nav-width);
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    border-left: 1px solid var(--color-border);
+  }
+
+  .sidenav__links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .sidenav__link {
+    font-family: var(--font-terminal);
+    font-size: 0.65rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    letter-spacing: 0.1em;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transition: color 0.3s ease;
+  }
+
+  .sidenav__link:hover,
+  .sidenav__link.is-active {
+    color: var(--color-accent);
+  }
+
+  @media (max-width: 768px) {
+    .sidenav {
+      display: none;
+    }
+  }
+</style>

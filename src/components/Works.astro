@@ -1,0 +1,430 @@
+---
+import { Icon } from 'astro-icon/components';
+
+const techMap: Record<string, { icon: string; color: string }> = {
+  'C': { icon: 'simple-icons:c', color: '#A8B9CC' },
+  'C++': { icon: 'simple-icons:cplusplus', color: '#00599C' },
+  'C#': { icon: 'simple-icons:csharp', color: '#512BD4' },
+  'TypeScript': { icon: 'simple-icons:typescript', color: '#3178C6' },
+  'JavaScript': { icon: 'simple-icons:javascript', color: '#F7DF1E' },
+  'Linux': { icon: 'simple-icons:linux', color: '#FCC624' },
+  'Git': { icon: 'simple-icons:git', color: '#F05032' },
+  'Unity': { icon: 'simple-icons:unity', color: '#000000' },
+  'n8n': { icon: 'simple-icons:n8n', color: '#EA4B71' },
+  'Supabase': { icon: 'simple-icons:supabase', color: '#3FCF8E' },
+  'Express.js': { icon: 'simple-icons:express', color: '#000000' },
+  'Google APIs': { icon: 'simple-icons:google', color: '#4285F4' },
+  'Next.js': { icon: 'simple-icons:nextdotjs', color: '#000000' },
+  'React': { icon: 'simple-icons:react', color: '#61DAFB' },
+  'Figma': { icon: 'simple-icons:figma', color: '#F24E1E' },
+};
+
+const works = [
+  {
+    id: 'w1',
+    title: '42 Tokyo カリキュラム',
+    period: '2025.04 —',
+    description: 'C / C++ で低レイヤーを学習',
+    summary: '講師・教材なしのピアラーニング環境で、C / C++ を中心にOS・プロセス・メモリ管理などの低レイヤー領域を学習。',
+    details: [
+      'C標準ライブラリ関数（strlen, memcpy等）の再実装',
+      'bash風シェルをCで実装（トークナイザ・パーサー・エグゼキューター）',
+      'mutex を用いたマルチスレッドの排他制御（食事する哲学者問題）',
+    ],
+    tech: ['C', 'C++', 'Linux', 'Git'],
+  },
+  {
+    id: 'w2',
+    title: '3D オンライン対戦ゲーム',
+    period: '2025.09',
+    description: 'ハッカソン 最優秀賞・企業賞',
+    summary: 'Progate ハッカソンで5名チームで制作した、Wii のゲームソフトをオマージュしたリアルタイム3Dオンライン対戦ゲーム。',
+    details: [
+      'ゲームUI（スコア表示、メニュー画面、対戦画面）の設計・実装を担当',
+      'リアルタイム対戦のネットワーク通信処理の一部を実装',
+      '最優秀賞・企業賞を受賞',
+    ],
+    tech: ['C#', 'Unity'],
+    client: { name: '受賞ポスト (X)', url: 'https://x.com/_58hack/status/1969732435245224145' },
+  },
+  {
+    id: 'w3',
+    title: '業務自動化・システム改善',
+    period: '2025.12 —',
+    description: 'n8n ワークフロー自動化 3件',
+    summary: 'n8n を用いた業務ワークフロー自動化3件の構築と、既存の予約管理・サポートシステムのバックエンドリファクタリング。',
+    details: [
+      'サイト制作プロセスの入力作業を n8n で自動化',
+      '問い合わせメールの自動返信ワークフローを構築',
+      'アポ獲得時の顧客データ処理・Meet URL 自動発行',
+      '既存システムのエラーハンドリング改善（null 返却問題）',
+      'OAuth 2.0 認証クライアントの競合を修正',
+    ],
+    tech: ['TypeScript', 'JavaScript', 'n8n', 'Supabase', 'Express.js', 'Google APIs'],
+  },
+  {
+    id: 'w4',
+    title: '企業 Web サイト制作',
+    period: '2026.02',
+    description: 'コーポレートサイト制作・ロゴデザイン',
+    summary: 'コーポレートサイトのフロントエンド制作からロゴデザインまでを一貫して担当した受託開発。',
+    details: [
+      'デザイン仮案を作成し、クライアントとすり合わせた上で実装',
+      'スクロール連動やトランジション等の動的な UI を実装',
+      'Figma でコーポレートロゴをデザイン・制作',
+    ],
+    tech: ['TypeScript', 'Next.js', 'React', 'Figma'],
+    client: { name: 'Clean Robotics株式会社', url: 'https://cleanrobotics.co.jp/' },
+  },
+] as const;
+---
+
+<section id="works" class="section">
+  <div class="section__split">
+    <div class="section__left">
+      <span class="section__number">02</span>
+      <span class="section__label">Works</span>
+    </div>
+    <div class="works__timeline" data-animate>
+      {
+        works.map((work, i) => (
+          <button
+            class="works__item"
+            data-modal={work.id}
+            data-animate
+            data-delay={i * 120}
+            type="button"
+          >
+            <div class="works__dot" />
+            <div class="works__body">
+              <span class="works__period">{work.period}</span>
+              <h3 class="works__title">{work.title}</h3>
+              <p class="works__desc">{work.description}</p>
+            </div>
+          </button>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<!-- モーダル -->
+{
+  works.map((work) => (
+    <div class="modal" id={`modal-${work.id}`}>
+      <div class="modal__backdrop" data-close />
+      <div class="modal__content">
+        <button class="modal__close" data-close type="button">
+          &times;
+        </button>
+        <span class="modal__period">{work.period}</span>
+        <h3 class="modal__title">{work.title}</h3>
+        <p class="modal__summary">{work.summary}</p>
+        <ul class="modal__details">
+          {work.details.map((d) => (
+            <li>{d}</li>
+          ))}
+        </ul>
+        <div class="modal__tech">
+          {work.tech.map((t) => {
+            const info = techMap[t];
+            return info ? (
+              <span
+                class="modal__tech-item"
+                style={`--brand-color: ${info.color}`}
+              >
+                <Icon name={info.icon} class="modal__tech-icon" />
+                <span class="modal__tech-name">{t}</span>
+              </span>
+            ) : (
+              <span class="modal__tag">{t}</span>
+            );
+          })}
+        </div>
+        {'client' in work && work.client && (
+          <a
+            href={work.client.url}
+            class="modal__link"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {work.client.name} →
+          </a>
+        )}
+      </div>
+    </div>
+  ))
+}
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-modal]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.modal;
+      const modal = document.getElementById(`modal-${id}`);
+      modal?.classList.add('is-open');
+    });
+  });
+
+  document.querySelectorAll('[data-close]').forEach((el) => {
+    el.addEventListener('click', () => {
+      el.closest('.modal')?.classList.remove('is-open');
+    });
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      document.querySelector('.modal.is-open')?.classList.remove('is-open');
+    }
+  });
+</script>
+
+<style>
+  /* ─── Timeline ─── */
+  .works__timeline {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding-left: 2rem;
+  }
+
+  /* 縦線 */
+  .works__timeline::before {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 0.5rem;
+    bottom: 0.5rem;
+    width: 1px;
+    background: var(--color-border);
+  }
+
+  .works__item {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 1.5rem 1rem 1.5rem 0;
+    background: none;
+    border: none;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    text-align: left;
+    transition: color 0.3s ease;
+  }
+
+  .works__item:hover {
+    color: var(--color-accent);
+  }
+
+  /* ドット */
+  .works__dot {
+    position: absolute;
+    left: -2rem;
+    top: 1.75rem;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    border: 2px solid var(--color-border);
+    background: var(--color-bg);
+    transition: border-color 0.3s ease, background 0.3s ease;
+    flex-shrink: 0;
+  }
+
+  .works__item:hover .works__dot {
+    border-color: var(--color-accent);
+    background: var(--color-accent);
+  }
+
+  .works__period {
+    font-family: var(--font-terminal);
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    letter-spacing: 0.1em;
+    min-width: 90px;
+    flex-shrink: 0;
+  }
+
+  .works__title {
+    font-family: var(--font-main), var(--font-jp);
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+  }
+
+  .works__desc {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+  }
+
+  /* ─── Modal ─── */
+  .modal {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  .modal.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(4px);
+  }
+
+  .modal__content {
+    position: relative;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 3rem;
+    max-width: 560px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    transform: translateY(16px);
+    transition: transform 0.3s ease;
+  }
+
+  .modal.is-open .modal__content {
+    transform: translateY(0);
+  }
+
+  .modal__close {
+    position: absolute;
+    top: 1rem;
+    right: 1.25rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.3s ease;
+  }
+
+  .modal__close:hover {
+    color: var(--color-text);
+  }
+
+  .modal__period {
+    font-family: var(--font-terminal);
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    letter-spacing: 0.1em;
+  }
+
+  .modal__title {
+    font-family: var(--font-main), var(--font-jp);
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0.75rem 0 1.5rem;
+  }
+
+  .modal__summary {
+    font-size: 0.9rem;
+    color: var(--color-text);
+    line-height: 1.8;
+    margin-bottom: 1.25rem;
+  }
+
+  .modal__details {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    padding-left: 1.25rem;
+    list-style: disc;
+  }
+
+  .modal__details li {
+    margin-bottom: 0.4rem;
+  }
+
+  .modal__tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .modal__tech-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    cursor: default;
+  }
+
+  .modal__tech-icon {
+    width: 24px;
+    height: 24px;
+    color: var(--color-text-muted);
+    transition: color 0.3s ease;
+  }
+
+  .modal__tech-item:hover .modal__tech-icon {
+    color: var(--brand-color);
+  }
+
+  .modal__tech-name {
+    position: absolute;
+    bottom: -1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-main);
+    font-size: 0.6rem;
+    color: var(--brand-color);
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    pointer-events: none;
+  }
+
+  .modal__tech-item:hover .modal__tech-name {
+    opacity: 1;
+  }
+
+  .modal__tag {
+    font-family: var(--font-main);
+    font-size: 0.7rem;
+    padding: 0.2rem 0.6rem;
+    border: 1px solid var(--color-border);
+    border-radius: 100px;
+    color: var(--color-text-muted);
+  }
+
+  .modal__link {
+    font-family: var(--font-main);
+    font-size: 0.85rem;
+    color: var(--color-accent);
+    transition: opacity 0.3s ease;
+  }
+
+  .modal__link:hover {
+    opacity: 0.7;
+  }
+
+  @media (max-width: 768px) {
+    .works__item {
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .modal__content {
+      padding: 2rem;
+    }
+  }
+</style>

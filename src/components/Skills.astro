@@ -1,0 +1,138 @@
+---
+import { Icon } from 'astro-icon/components';
+
+const groups = [
+  {
+    label: 'Languages',
+    items: [
+      { name: 'C', icon: 'simple-icons:c', color: '#A8B9CC' },
+      { name: 'C++', icon: 'simple-icons:cplusplus', color: '#00599C' },
+      { name: 'TypeScript', icon: 'simple-icons:typescript', color: '#3178C6' },
+      { name: 'JavaScript', icon: 'simple-icons:javascript', color: '#F7DF1E' },
+      { name: 'C#', icon: 'simple-icons:csharp', color: '#512BD4' },
+    ],
+  },
+  {
+    label: 'Frameworks',
+    items: [
+      { name: 'Next.js', icon: 'simple-icons:nextdotjs', color: '#000000' },
+      { name: 'React', icon: 'simple-icons:react', color: '#61DAFB' },
+      { name: 'Express', icon: 'simple-icons:express', color: '#000000' },
+      { name: 'Astro', icon: 'simple-icons:astro', color: '#BC52EE' },
+      { name: 'Unity', icon: 'simple-icons:unity', color: '#000000' },
+    ],
+  },
+  {
+    label: 'Infrastructure',
+    items: [
+      { name: 'Linux', icon: 'simple-icons:linux', color: '#FCC624' },
+      { name: 'Docker', icon: 'simple-icons:docker', color: '#2496ED' },
+      { name: 'Git', icon: 'simple-icons:git', color: '#F05032' },
+      { name: 'Supabase', icon: 'simple-icons:supabase', color: '#3FCF8E' },
+    ],
+  },
+  {
+    label: 'Tools',
+    items: [
+      { name: 'n8n', icon: 'simple-icons:n8n', color: '#EA4B71' },
+      { name: 'Claude', icon: 'simple-icons:anthropic', color: '#D97757' },
+      { name: 'Figma', icon: 'simple-icons:figma', color: '#F24E1E' },
+      { name: 'Google', icon: 'simple-icons:google', color: '#4285F4' },
+    ],
+  },
+] as const;
+---
+
+<section id="skills" class="section">
+  <div class="section__split">
+    <div class="section__left">
+      <span class="section__number">03</span>
+      <span class="section__label">Skills</span>
+    </div>
+    <div class="skills__right" data-animate>
+      {
+        groups.map((group) => (
+          <div class="skills__group">
+            <h3 class="skills__group-label">{group.label}</h3>
+            <ul class="skills__list">
+              {group.items.map((item, i) => (
+                <li
+                  class="skills__item"
+                  style={`--brand-color: ${item.color}`}
+                  data-animate
+                  data-delay={i * 50}
+                >
+                  <Icon name={item.icon} class="skills__icon" />
+                  <span class="skills__name">{item.name}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .skills__right {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .skills__group-label {
+    font-family: var(--font-terminal);
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--color-text-muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 1.25rem;
+  }
+
+  .skills__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+
+  .skills__item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    cursor: default;
+  }
+
+  .skills__icon {
+    width: 40px;
+    height: 40px;
+    color: var(--color-text-muted);
+    transition: color 0.3s ease;
+  }
+
+  .skills__item:hover .skills__icon {
+    color: var(--brand-color);
+  }
+
+  .skills__name {
+    position: absolute;
+    bottom: -1.75rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-main);
+    font-size: 0.7rem;
+    color: var(--brand-color);
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    pointer-events: none;
+  }
+
+  .skills__item:hover .skills__name {
+    opacity: 1;
+  }
+</style>
