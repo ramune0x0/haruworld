@@ -27,9 +27,6 @@
     </div>
   </div>
 
-  <div class="hero__scroll-hint" id="hero-scroll-hint">
-    <span>Scroll</span>
-  </div>
 </section>
 
 <script>
@@ -40,7 +37,7 @@
   const lineTop = document.getElementById('hero-line-top')!;
   const lineBottom = document.getElementById('hero-line-bottom')!;
   const clearzone = document.getElementById('hero-clearzone')!;
-  const scrollHint = document.getElementById('hero-scroll-hint')!;
+
   const ROLE_TEXT = 'Engineer & Designer';
   const NAME_TEXT = 'Haruworld';
   const TYPE_SPEED = 60;
@@ -92,7 +89,6 @@
 
     // ④ スクロール解除
     await wait(500);
-    scrollHint.classList.add('is-visible');
     document.body.style.overflow = '';
   }
 
@@ -201,30 +197,6 @@
   .hero__cursor-lg.is-done {
     animation: blink 1.2s step-end infinite;
     opacity: 0.3;
-  }
-
-  /* スクロールヒント */
-  .hero__scroll-hint {
-    position: absolute;
-    bottom: 3rem;
-    left: 50%;
-    transform: translateX(-50%);
-    opacity: 0;
-    transition: opacity 0.6s ease;
-    z-index: 2;
-  }
-
-  .hero__scroll-hint.is-visible {
-    opacity: 1;
-  }
-
-  .hero__scroll-hint span {
-    font-family: var(--font-main);
-    font-size: 0.7rem;
-    color: var(--color-text-muted);
-    letter-spacing: 0.2em;
-    animation: hint-bounce 2s ease-in-out infinite;
-    display: inline-block;
   }
 
   @keyframes blink {

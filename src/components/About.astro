@@ -2,69 +2,26 @@
 
 ---
 
-<section id="about" class="section about-section">
-  <svg class="about__deco-line" viewBox="0 0 1400 2" preserveAspectRatio="none">
-    <line x1="0" y1="1" x2="1400" y2="1" stroke="#e2e0db" stroke-width="1" />
-  </svg>
-
-  <div class="section__split">
-    <div class="section__left">
-      <span class="section__number">01</span>
-      <span class="section__label">About</span>
-      <span class="section__desc">私のこと</span>
+<div class="about" data-animate>
+  <div class="about__content">
+    <div class="about__text">
+      <h2 class="about__title">Haru</h2>
+      <p>2007年生まれ。</p>
+      <p>42 Tokyo でC / C++ を中心に低レイヤーを学びつつ、インターンや受託開発でフロントエンドから業務自動化まで幅広く。</p>
+      <p>ジャンル問わず、興味があればとりあえずやってみるタイプ。</p>
+      <p>好きなポケモンはミミッキュ。</p>
     </div>
-    <div class="about__right" data-animate>
-      <div class="about__content">
-        <div class="about__text">
-          <h2 class="about__title">Haru</h2>
-          <p>
-            42 Tokyo でC / C++ を中心に低レイヤーを学びながら、
-            インターンや受託開発でフロントエンドから業務自動化まで幅広く手を動かしています。
-          </p>
-          <p>
-            未経験の技術でも飛び込んで、動くものを作って届ける。
-            領域を限定せず、必要なことをやるのが自分のスタイルです。
-          </p>
-        </div>
-        <img
-          class="about__photo"
-          src="https://github.com/ramune0x0.png"
-          alt="Haru"
-          width="220"
-          height="280"
-        />
-      </div>
-    </div>
+    <img
+      class="about__photo"
+      src="https://github.com/ramune0x0.png"
+      alt="Haru"
+      width="220"
+      height="280"
+    />
   </div>
-</section>
+</div>
 
 <style>
-  .about-section { position: relative; }
-
-  .about-section .section__split {
-    position: relative;
-  }
-
-  .about-section .section__split::before {
-    content: '';
-    position: absolute;
-    top: -3rem;
-    bottom: -3rem;
-    left: 50%;
-    width: 100vw;
-    transform: translateX(-50%);
-    background: #fff;
-    z-index: -1;
-  }
-
-  .about__deco-line {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 60%;
-    height: 2px;
-  }
-
   .about__content {
     display: flex;
     align-items: stretch;
@@ -87,7 +44,7 @@
     font-size: 0.95rem;
     color: var(--color-text-muted);
     line-height: 2;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
   }
 
   .about__text p:last-child {

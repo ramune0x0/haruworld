@@ -29,43 +29,49 @@ const links = [
 ] as const;
 ---
 
-<section id="contact" class="section">
-  <div class="section__split">
-    <div class="section__left">
-      <span class="section__number">04</span>
-      <span class="section__label">Contact</span>
-      <span class="section__desc">お気軽にどうぞ</span>
-    </div>
-    <div class="contact__right" data-animate>
-      <ul class="contact__list">
-        {
-          links.map((link) => (
-            <li>
-              <a
-                href={link.url}
-                class="contact__item"
-                style={`--brand-color: ${link.color}`}
-                target={link.url.startsWith('mailto') ? undefined : '_blank'}
-                rel={link.url.startsWith('mailto') ? undefined : 'noopener noreferrer'}
-              >
-                <Icon name={link.icon} class="contact__icon" />
-                <span class="contact__name">{link.name}</span>
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-    </div>
-  </div>
-</section>
+<div class="contact" data-animate>
+  <ul class="contact__list">
+    {
+      links.map((link) => (
+        <li>
+          <a
+            href={link.url}
+            class="contact__item"
+            style={`--brand-color: ${link.color}`}
+            target={link.url.startsWith('mailto') ? undefined : '_blank'}
+            rel={link.url.startsWith('mailto') ? undefined : 'noopener noreferrer'}
+          >
+            <Icon name={link.icon} class="contact__icon" />
+            <span class="contact__name">{link.name}</span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+  <p class="contact__copy">&copy; 2026 Haruworld</p>
+</div>
 
 <style>
+  .contact {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3rem;
+    padding: 4rem 0;
+  }
+
   .contact__list {
     display: flex;
     flex-wrap: wrap;
-    gap: 2.5rem;
-    align-items: center;
     justify-content: center;
+    gap: 3rem;
+  }
+
+  .contact__copy {
+    font-family: var(--font-main);
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    letter-spacing: 0.05em;
   }
 
   .contact__item {

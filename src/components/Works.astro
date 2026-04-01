@@ -22,7 +22,7 @@ const techMap: Record<string, { icon: string; color: string }> = {
 const works = [
   {
     id: 'w1',
-    title: '42 Tokyo カリキュラム',
+    title: '42 Tokyo 在学中',
     period: '2025.04 —',
     description: 'C / C++ で低レイヤーを学習',
     summary: '講師・教材なしのピアラーニング環境で、C / C++ を中心にOS・プロセス・メモリ管理などの低レイヤー領域を学習。',
@@ -32,6 +32,7 @@ const works = [
       'mutex を用いたマルチスレッドの排他制御（食事する哲学者問題）',
     ],
     tech: ['C', 'C++', 'Linux', 'Git'],
+    client: { name: '42 Tokyo', url: 'https://42tokyo.jp/' },
   },
   {
     id: 'w2',
@@ -50,7 +51,7 @@ const works = [
   {
     id: 'w3',
     title: 'CODE BLUE 2025 学生スタッフ',
-    period: '2025',
+    period: '2025.11',
     description: 'セキュリティカンファレンスの運営',
     summary: '国際セキュリティカンファレンス CODE BLUE 2025 に学生スタッフとして参加。',
     details: [
@@ -61,8 +62,8 @@ const works = [
   {
     id: 'w4',
     title: '業務自動化・システム改善',
-    period: '2025.12 —',
-    description: 'n8n ワークフロー自動化 3件',
+    period: '2025.12 — 2026.04',
+    description: 'インターン｜n8n ワークフロー自動化 3件',
     summary: 'n8n を用いた業務ワークフロー自動化3件の構築と、既存の予約管理・サポートシステムのバックエンドリファクタリング。',
     details: [
       'サイト制作プロセスの入力作業を n8n で自動化',
@@ -76,7 +77,7 @@ const works = [
   {
     id: 'w5',
     title: '企業 Web サイト制作',
-    period: '2026.02',
+    period: '2026 —',
     description: 'コーポレートサイト制作・ロゴデザイン',
     summary: 'コーポレートサイトのフロントエンド制作からロゴデザインまでを一貫して担当した受託開発。',
     details: [
@@ -90,23 +91,13 @@ const works = [
 ] as const;
 ---
 
-<section id="works" class="section" style="position: relative;">
-  <svg style="position: absolute; top: 0; right: 0; width: 50%; height: 2px;" viewBox="0 0 1400 2" preserveAspectRatio="none">
-    <line x1="0" y1="1" x2="1400" y2="1" stroke="#e2e0db" stroke-width="1" />
-  </svg>
-  <div class="section__split">
-    <div class="section__left">
-      <span class="section__number">02</span>
-      <span class="section__label">Works</span>
-      <span class="section__desc">これまでの活動</span>
-    </div>
-    <div class="works__area" data-animate>
-      <div class="works__two-col">
+<div class="works" data-animate>
+  <div class="works__two-col">
         <div class="works__timeline">
           {
             works.map((work, i) => (
               <button
-                class="works__item"
+                class={`works__item${i === 0 ? ' is-active' : ''}`}
                 data-work={work.id}
                 data-animate
                 data-delay={i * 120}
@@ -124,8 +115,8 @@ const works = [
         </div>
         <div class="works__bubble-area">
           {
-            works.map((work) => (
-              <div class="works__bubble" id={`bubble-${work.id}`}>
+            works.map((work, i) => (
+              <div class={`works__bubble${i === 0 ? ' is-open' : ''}`} id={`bubble-${work.id}`}>
                 <span class="works__bubble-period">{work.period}</span>
                 <h4 class="works__bubble-title">{work.title}</h4>
                 <p class="works__bubble-summary">{work.summary}</p>
@@ -161,7 +152,7 @@ const works = [
       </div>
     </div>
   </div>
-</section>
+</div>
 
 <!-- モバイル用モーダル -->
 {
@@ -204,44 +195,43 @@ const works = [
 }
 
 <script>
-  const isMobile = () => window.innerWidth <= 768;
+  function initWorks(): void {
+    const isMobile = () => window.innerWidth <= 768;
 
-  document.querySelectorAll<HTMLButtonElement>('[data-work]').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const id = btn.dataset.work;
+    document.querySelectorAll<HTMLButtonElement>('[data-work]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.work;
 
-      if (isMobile()) {
-        // モバイル: モーダル表示
-        const modal = document.getElementById(`modal-${id}`);
-        modal?.classList.add('is-open');
-        document.body.style.overflow = 'hidden';
-      } else {
-        // PC: 右カラム吹き出し
-        const bubble = document.getElementById(`bubble-${id}`);
-        const isOpen = bubble?.classList.contains('is-open');
+        if (isMobile()) {
+          const modal = document.getElementById(`modal-${id}`);
+          modal?.classList.add('is-open');
+          document.body.style.overflow = 'hidden';
+        } else {
+          const bubble = document.getElementById(`bubble-${id}`);
+          const isOpen = bubble?.classList.contains('is-open');
 
-        document.querySelectorAll('.works__bubble.is-open').forEach((b) => {
-          b.classList.remove('is-open');
-        });
-        document.querySelectorAll('.works__item.is-active').forEach((b) => {
-          b.classList.remove('is-active');
-        });
+          document.querySelectorAll('.works__bubble.is-open').forEach((b) => {
+            b.classList.remove('is-open');
+          });
+          document.querySelectorAll('.works__item.is-active').forEach((b) => {
+            b.classList.remove('is-active');
+          });
 
-        if (!isOpen) {
-          bubble?.classList.add('is-open');
-          btn.classList.add('is-active');
+          if (!isOpen) {
+            bubble?.classList.add('is-open');
+            btn.classList.add('is-active');
+          }
         }
-      }
+      });
     });
-  });
 
-  // モーダルを閉じる
-  document.querySelectorAll('[data-modal-close]').forEach((el) => {
-    el.addEventListener('click', () => {
-      el.closest('.works__modal')?.classList.remove('is-open');
-      document.body.style.overflow = '';
+    document.querySelectorAll('[data-modal-close]').forEach((el) => {
+      el.addEventListener('click', () => {
+        el.closest('.works__modal')?.classList.remove('is-open');
+        document.body.style.overflow = '';
+      });
     });
-  });
+  }
 
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
@@ -249,11 +239,12 @@ const works = [
       document.body.style.overflow = '';
     }
   });
+
+  initWorks();
+  document.addEventListener('astro:after-swap', initWorks);
 </script>
 
 <style>
-  .works__area { position: relative; }
-
   .works__two-col {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -275,7 +266,7 @@ const works = [
     top: 0.5rem;
     bottom: 0.5rem;
     width: 1px;
-    background: var(--color-border);
+    background: var(--color-line);
   }
 
   .works__item {
@@ -306,7 +297,7 @@ const works = [
     width: 11px;
     height: 11px;
     border-radius: 50%;
-    border: 2px solid var(--color-border);
+    border: 2px solid var(--color-line);
     background: var(--color-bg);
     transition: border-color 0.3s ease, background 0.3s ease;
   }
@@ -318,7 +309,7 @@ const works = [
   }
 
   .works__period {
-    font-family: var(--font-terminal);
+    font-family: var(--font-main);
     font-size: 0.8rem;
     color: var(--color-text-muted);
     letter-spacing: 0.1em;
@@ -347,7 +338,7 @@ const works = [
   .works__bubble {
     display: none;
     padding: 1.5rem;
-    border: 1px solid var(--color-border);
+    border: 1px solid var(--color-line);
     border-radius: 8px;
     background: var(--color-bg);
     box-shadow: 0 2px 16px rgba(0, 0, 0, 0.04);
@@ -364,7 +355,7 @@ const works = [
   }
 
   .works__bubble-period {
-    font-family: var(--font-terminal);
+    font-family: var(--font-main);
     font-size: 0.75rem;
     color: var(--color-text-muted);
     letter-spacing: 0.1em;
@@ -449,7 +440,7 @@ const works = [
   .works__modal-content {
     position: relative;
     background: var(--color-bg);
-    border: 1px solid var(--color-border);
+    border: 1px solid var(--color-line);
     border-radius: 8px;
     padding: 2rem;
     width: 90%;

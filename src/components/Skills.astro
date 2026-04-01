@@ -42,17 +42,7 @@ const groups = [
 ] as const;
 ---
 
-<section id="skills" class="section" style="position: relative;">
-  <svg style="position: absolute; top: 0; left: 10%; width: 40%; height: 2px;" viewBox="0 0 1400 2" preserveAspectRatio="none">
-    <line x1="0" y1="1" x2="1400" y2="1" stroke="#e2e0db" stroke-width="1" />
-  </svg>
-  <div class="section__split">
-    <div class="section__left">
-      <span class="section__number">03</span>
-      <span class="section__label">Skills</span>
-      <span class="section__desc">使える技術</span>
-    </div>
-    <div class="skills__right" data-animate>
+<div class="skills" data-animate>
       {
         groups.map((group) => (
           <div class="skills__group">
@@ -73,19 +63,20 @@ const groups = [
           </div>
         ))
       }
-    </div>
-  </div>
-</section>
+</div>
 
 <style>
-  .skills__right {
+  .skills {
     display: flex;
     flex-direction: column;
     gap: 3rem;
+    padding-bottom: 2rem;
+    position: relative;
+    z-index: 2;
   }
 
   .skills__group-label {
-    font-family: var(--font-terminal);
+    font-family: var(--font-main);
     font-size: 0.85rem;
     font-weight: 400;
     color: var(--color-text-muted);
@@ -115,6 +106,7 @@ const groups = [
     height: 40px;
     color: var(--color-text-muted);
     transition: color 0.3s ease;
+    pointer-events: none;
   }
 
   .skills__item:hover .skills__icon {

@@ -1,22 +1,276 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Header from '../components/Header.astro';
-import Hero from '../components/Hero.astro';
-import About from '../components/About.astro';
-import Works from '../components/Works.astro';
-import Skills from '../components/Skills.astro';
-import Contact from '../components/Contact.astro';
-import Footer from '../components/Footer.astro';
+
+const navItems = [
+  { label: 'About', href: '/about/', number: '01', desc: '私のこと' },
+  { label: 'Works', href: '/works/', number: '02', desc: 'これまでの活動' },
+  { label: 'Skills', href: '/skills/', number: '03', desc: '使える技術' },
+  { label: 'Contact', href: '/contact/', number: '04', desc: 'お気軽にどうぞ' },
+] as const;
 ---
 
 <Layout title="Haruworld — Engineer & Designer">
-  <Header />
-  <div class="site-main">
-    <Hero />
-    <About />
-    <Works />
-    <Skills />
-    <Contact />
-    <Footer />
+  <!-- ローディングオーバーレイ -->
+  <div class="loader" id="loader">
+    <span class="loader__text" id="loader-text"></span>
+    <span class="loader__cursor">|</span>
+  </div>
+
+  <div class="home" id="home">
+    <div class="home__inner">
+      <header class="home__header">
+        <p class="home__role" id="home-role">Engineer & Designer</p>
+        <h1 class="home__name" id="home-name">Haruworld</h1>
+      </header>
+
+      <hr class="deco-line" id="home-line" />
+
+      <nav class="home__nav" id="home-nav">
+        {
+          navItems.map((item, i) => (
+            <a href={item.href} class="home__nav-item" data-delay={i * 80}>
+              <span class="home__nav-number">{item.number}</span>
+              <span class="home__nav-label">{item.label}</span>
+              <span class="home__nav-desc">{item.desc}</span>
+            </a>
+          ))
+        }
+      </nav>
+    </div>
   </div>
 </Layout>
+
+<script>
+  function initHome(): void {
+    const loader = document.getElementById('loader');
+    const loaderText = document.getElementById('loader-text');
+    const home = document.getElementById('home');
+    const homeRole = document.getElementById('home-role');
+    const homeName = document.getElementById('home-name');
+    const homeLine = document.getElementById('home-line');
+    const homeNav = document.getElementById('home-nav');
+
+    if (!loader || !home || !loaderText || !homeRole || !homeName || !homeLine || !homeNav) return;
+
+    function typeText(el: HTMLElement, text: string, speed: number): Promise<void> {
+      return new Promise((resolve) => {
+        let i = 0;
+        const interval = setInterval(() => {
+          el.textContent += text[i];
+          i++;
+          if (i >= text.length) {
+            clearInterval(interval);
+            resolve();
+          }
+        }, speed);
+      });
+    }
+
+    function wait(ms: number): Promise<void> {
+      return new Promise((r) => setTimeout(r, ms));
+    }
+
+    async function startOpening(): Promise<void> {
+      document.body.style.overflow = 'hidden';
+
+      await wait(300);
+      await typeText(loaderText, 'Haruworld', 80);
+      await wait(600);
+
+      loader.classList.add('is-hidden');
+      home.classList.add('is-visible');
+
+      await wait(400);
+      homeRole.classList.add('is-visible');
+      await wait(200);
+      homeName.classList.add('is-visible');
+      await wait(300);
+      homeLine.classList.add('is-visible');
+      await wait(200);
+
+      const items = homeNav.querySelectorAll('.home__nav-item');
+      for (const item of items) {
+        const el = item as HTMLElement;
+        const delay = el.dataset.delay;
+        if (delay) await wait(parseInt(delay));
+        el.classList.add('is-visible');
+      }
+
+      document.body.style.overflow = '';
+    }
+
+    startOpening();
+  }
+
+  initHome();
+  document.addEventListener('astro:after-swap', initHome);
+</script>
+
+<style>
+  /* ─── Loader ─── */
+  .loader {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: var(--color-text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.7s cubic-bezier(0.76, 0, 0.24, 1);
+  }
+
+  .loader.is-hidden {
+    transform: translateY(-100%);
+  }
+
+  .loader__text {
+    font-family: var(--font-main);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    color: var(--color-bg);
+    letter-spacing: -0.02em;
+  }
+
+  .loader__cursor {
+    font-family: var(--font-main);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 400;
+    color: var(--color-bg);
+    animation: blink 0.8s step-end infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  /* ─── Home ─── */
+  .home {
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+  .home.is-visible {
+    opacity: 1;
+  }
+
+  .home__inner {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: var(--max-width);
+  }
+
+  .home__header {
+    margin-bottom: 1rem;
+  }
+
+  .home__role {
+    font-family: var(--font-main);
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    letter-spacing: 0.2em;
+    margin-bottom: 1rem;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .home__role.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .home__name {
+    font-family: var(--font-main);
+    font-size: clamp(3rem, 8vw, 5rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .home__name.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  #home-line {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+  #home-line.is-visible {
+    opacity: 1;
+  }
+
+  .home__nav {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .home__nav-item {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid var(--color-line);
+    transition: color 0.3s ease, opacity 0.5s ease, transform 0.5s ease;
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  .home__nav-item.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .home__nav-item:hover {
+    color: var(--color-accent);
+  }
+
+  .home__nav-number {
+    font-family: var(--font-main);
+    font-size: 1.5rem;
+    color: var(--color-line);
+    min-width: 2.5rem;
+    transition: color 0.3s ease;
+  }
+
+  .home__nav-item:hover .home__nav-number {
+    color: var(--color-accent);
+  }
+
+  .home__nav-label {
+    font-family: var(--font-main);
+    font-size: 1.5rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .home__nav-desc {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    margin-left: auto;
+  }
+
+  @media (max-width: 768px) {
+    .home {
+      padding: 3rem 1.5rem;
+    }
+
+    .home__nav-desc {
+      display: none;
+    }
+  }
+</style>

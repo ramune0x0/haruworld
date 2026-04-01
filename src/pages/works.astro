@@ -1,0 +1,21 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Works from '../components/Works.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout title="Works — Haruworld">
+  <Header />
+  <div class="site-main">
+    <div class="page">
+      <div class="page__header" data-animate>
+        <span class="page__number">02</span>
+        <h1 class="page__title">Works</h1>
+        <p class="page__desc">これまでの活動</p>
+      </div>
+      <Works />
+      <Footer />
+    </div>
+  </div>
+</Layout>
