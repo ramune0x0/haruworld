@@ -32,7 +32,7 @@ const works = [
       'mutex を用いたマルチスレッドの排他制御（食事する哲学者問題）',
     ],
     tech: ['C', 'C++', 'Linux', 'Git'],
-    client: { name: '42 Tokyo', url: 'https://42tokyo.jp/' },
+    links: [{ name: '42 Tokyo', url: 'https://42tokyo.jp/' }],
   },
   {
     id: 'w2',
@@ -40,13 +40,16 @@ const works = [
     period: '2025.09',
     description: 'ハッカソン 最優秀賞・企業賞',
     summary: 'Progate ハッカソンで5名チームで制作した、Wii のゲームソフトをオマージュしたリアルタイム3Dオンライン対戦ゲーム。',
+    links: [
+      { name: '受賞ポスト (X)', url: 'https://x.com/_58hack/status/1969732435245224145' },
+      { name: "ゲーム紹介 (Topaz)", url: 'https://topaz.dev/projects/be299aa8d1619240c394' },
+    ],
     details: [
-      'ゲームUI（スコア表示、メニュー画面、対戦画面）の設計・実装を担当',
+      'ゲームUIの設計・実装を担当',
       'リアルタイム対戦のネットワーク通信処理の一部を実装',
       '最優秀賞・企業賞を受賞',
     ],
     tech: ['C#', 'Unity'],
-    client: { name: '受賞ポスト (X)', url: 'https://x.com/_58hack/status/1969732435245224145' },
   },
   {
     id: 'w3',
@@ -86,7 +89,7 @@ const works = [
       'Figma でコーポレートロゴをデザイン・制作',
     ],
     tech: ['TypeScript', 'Next.js', 'React', 'Figma'],
-    client: { name: 'Clean Robotics株式会社', url: 'https://cleanrobotics.co.jp/' },
+    links: [{ name: 'Clean Robotics株式会社', url: 'https://cleanrobotics.co.jp/' }],
   },
 ] as const;
 ---
@@ -135,15 +138,19 @@ const works = [
                     })}
                   </div>
                 )}
-                {'client' in work && work.client && (
-                  <a
-                    href={work.client.url}
-                    class="works__bubble-link"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {work.client.name} →
-                  </a>
+                {'links' in work && work.links && (
+                  <div class="works__bubble-links">
+                    {work.links.map((link) => (
+                      <a
+                        href={link.url}
+                        class="works__bubble-link"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {link.name} →
+                      </a>
+                    ))}
+                  </div>
                 )}
               </div>
             ))
@@ -179,15 +186,19 @@ const works = [
             })}
           </div>
         )}
-        {'client' in work && work.client && (
-          <a
-            href={work.client.url}
-            class="works__bubble-link"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {work.client.name} →
-          </a>
+        {'links' in work && work.links && (
+          <div class="works__bubble-links">
+            {work.links.map((link) => (
+              <a
+                href={link.url}
+                class="works__bubble-link"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {link.name} →
+              </a>
+            ))}
+          </div>
         )}
       </div>
     </div>
@@ -403,6 +414,12 @@ const works = [
   .works__bubble-icon svg {
     width: 18px;
     height: 18px;
+  }
+
+  .works__bubble-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
   }
 
   .works__bubble-link {

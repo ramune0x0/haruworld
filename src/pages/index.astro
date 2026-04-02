@@ -4,23 +4,33 @@ import Layout from '../layouts/Layout.astro';
 const navItems = [
   { label: 'About', href: '/about/', number: '01', desc: '私のこと' },
   { label: 'Works', href: '/works/', number: '02', desc: 'これまでの活動' },
-  { label: 'Skills', href: '/skills/', number: '03', desc: '使える技術' },
-  { label: 'Contact', href: '/contact/', number: '04', desc: 'お気軽にどうぞ' },
+  { label: 'Skills', href: '/skills/', number: '03', desc: '触ってきたもの' },
+  { label: 'Links', href: '/contact/', number: '04', desc: 'ここにいます' },
 ] as const;
 ---
 
 <Layout title="Haruworld — Engineer & Designer">
   <!-- ローディングオーバーレイ -->
   <div class="loader" id="loader">
-    <span class="loader__text" id="loader-text"></span>
-    <span class="loader__cursor">|</span>
+    <div class="loader__inner">
+      <div class="loader__wave">
+        {'Loading...'.split('').map((char, i) => (
+          <span class="loader__char" style={`animation-delay: ${i * 0.08}s`}>{char}</span>
+        ))}
+      </div>
+      <div class="loader__faces">
+        <span class="loader__face">0x0</span>
+        <span class="loader__face">0x0</span>
+        <span class="loader__face">0x0</span>
+      </div>
+    </div>
   </div>
 
   <div class="home" id="home">
     <div class="home__inner">
       <header class="home__header">
         <p class="home__role" id="home-role">Engineer & Designer</p>
-        <h1 class="home__name" id="home-name">Haruworld</h1>
+        <h1 class="home__name" id="home-name">Haruworld<span class="home__cursor">|</span></h1>
       </header>
 
       <hr class="deco-line" id="home-line" />
@@ -43,20 +53,34 @@ const navItems = [
 <script>
   function initHome(): void {
     const loader = document.getElementById('loader');
-    const loaderText = document.getElementById('loader-text');
+    const loaderFaces = document.querySelectorAll('.loader__face');
     const home = document.getElementById('home');
     const homeRole = document.getElementById('home-role');
     const homeName = document.getElementById('home-name');
     const homeLine = document.getElementById('home-line');
     const homeNav = document.getElementById('home-nav');
 
-    if (!loader || !home || !loaderText || !homeRole || !homeName || !homeLine || !homeNav) return;
+    if (!home || !homeRole || !homeName || !homeLine || !homeNav) return;
 
     function typeText(el: HTMLElement, text: string, speed: number): Promise<void> {
       return new Promise((resolve) => {
         let i = 0;
         const interval = setInterval(() => {
           el.textContent += text[i];
+          i++;
+          if (i >= text.length) {
+            clearInterval(interval);
+            resolve();
+          }
+        }, speed);
+      });
+    }
+
+    function typeTextNode(node: Text, text: string, speed: number): Promise<void> {
+      return new Promise((resolve) => {
+        let i = 0;
+        const interval = setInterval(() => {
+          node.textContent += text[i];
           i++;
           if (i >= text.length) {
             clearInterval(interval);
@@ -73,17 +97,38 @@ const navItems = [
     async function startOpening(): Promise<void> {
       document.body.style.overflow = 'hidden';
 
-      await wait(300);
-      await typeText(loaderText, 'Haruworld', 80);
-      await wait(600);
+      if (loader && loaderFaces.length > 0) {
+        await wait(1800);
 
-      loader.classList.add('is-hidden');
+        const delays = [0, 1000, 1500];
+        for (let i = 0; i < loaderFaces.length; i++) {
+          await wait(delays[i]);
+          (loaderFaces[i] as HTMLElement).classList.add('is-visible');
+        }
+        await wait(800);
+
+        loader.classList.add('is-hidden');
+        await wait(700);
+      }
+
       home.classList.add('is-visible');
 
       await wait(400);
       homeRole.classList.add('is-visible');
       await wait(200);
+
+      const cursor = homeName.querySelector('.home__cursor') as HTMLElement;
+      homeName.childNodes.forEach((node) => {
+        if (node.nodeType === Node.TEXT_NODE) node.textContent = '';
+      });
       homeName.classList.add('is-visible');
+      cursor.classList.add('is-typing');
+      const nameTextNode = document.createTextNode('');
+      homeName.insertBefore(nameTextNode, cursor);
+      await typeTextNode(nameTextNode, 'Haruworld', 60);
+      cursor.classList.remove('is-typing');
+      cursor.classList.add('is-idle');
+
       await wait(300);
       homeLine.classList.add('is-visible');
       await wait(200);
@@ -94,6 +139,13 @@ const navItems = [
         const delay = el.dataset.delay;
         if (delay) await wait(parseInt(delay));
         el.classList.add('is-visible');
+
+        const label = el.querySelector('.home__nav-label') as HTMLElement;
+        if (label) {
+          const text = label.textContent || '';
+          label.textContent = '';
+          await typeText(label, text, 40);
+        }
       }
 
       document.body.style.overflow = '';
@@ -123,20 +175,52 @@ const navItems = [
     transform: translateY(-100%);
   }
 
-  .loader__text {
-    font-family: var(--font-main);
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    font-weight: 700;
-    color: var(--color-bg);
-    letter-spacing: -0.02em;
+  .loader__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
   }
 
-  .loader__cursor {
+  .loader__wave {
+    display: flex;
+    align-items: center;
+  }
+
+  .loader__char {
     font-family: var(--font-main);
-    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-size: clamp(0.9rem, 2vw, 1.2rem);
     font-weight: 400;
     color: var(--color-bg);
-    animation: blink 0.8s step-end infinite;
+    display: inline-block;
+    animation: wave 1.2s ease-in-out infinite;
+    opacity: 0.7;
+  }
+
+  .loader__faces {
+    display: flex;
+    gap: 2.5rem;
+  }
+
+  .loader__face {
+    font-family: var(--font-main);
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    font-weight: 700;
+    color: var(--color-bg);
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+
+  .loader__face.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @keyframes wave {
+    0%, 100% { transform: translateY(0); }
+    30% { transform: translateY(-0.4em); }
+    60% { transform: translateY(0); }
   }
 
   @keyframes blink {
@@ -202,6 +286,21 @@ const navItems = [
   .home__name.is-visible {
     opacity: 1;
     transform: translateY(0);
+  }
+
+  .home__cursor {
+    font-weight: 400;
+    opacity: 0;
+  }
+
+  .home__cursor.is-typing {
+    opacity: 1;
+    animation: blink 0.8s step-end infinite;
+  }
+
+  .home__cursor.is-idle {
+    opacity: 1;
+    animation: blink 1.2s step-end infinite;
   }
 
   #home-line {

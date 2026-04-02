@@ -19,6 +19,7 @@ const links = [
     icon: 'simple-icons:instagram',
     color: '#E4405F',
     url: '#',
+    comingSoon: true,
   },
   {
     name: 'Email',
@@ -34,22 +35,35 @@ const links = [
     {
       links.map((link) => (
         <li>
-          <a
-            href={link.url}
-            class="contact__item"
-            style={`--brand-color: ${link.color}`}
-            target={link.url.startsWith('mailto') ? undefined : '_blank'}
-            rel={link.url.startsWith('mailto') ? undefined : 'noopener noreferrer'}
-          >
-            <Icon name={link.icon} class="contact__icon" />
-            <span class="contact__name">{link.name}</span>
-          </a>
+          {'comingSoon' in link && link.comingSoon ? (
+            <button
+              class="contact__item contact__item--soon"
+              style={`--brand-color: ${link.color}`}
+              type="button"
+              data-coming-soon
+            >
+              <Icon name={link.icon} class="contact__icon" />
+              <span class="contact__name">{link.name}</span>
+            </button>
+          ) : (
+            <a
+              href={link.url}
+              class="contact__item"
+              style={`--brand-color: ${link.color}`}
+              target={link.url.startsWith('mailto') ? undefined : '_blank'}
+              rel={link.url.startsWith('mailto') ? undefined : 'noopener noreferrer'}
+            >
+              <Icon name={link.icon} class="contact__icon" />
+              <span class="contact__name">{link.name}</span>
+            </a>
+          )}
         </li>
       ))
     }
   </ul>
   <p class="contact__copy">&copy; 2026 Haruworld</p>
 </div>
+<div class="contact__toast" id="coming-soon-toast">準備中です。。＞＜</div>
 
 <style>
   .contact {
@@ -111,4 +125,46 @@ const links = [
   .contact__item:hover .contact__name {
     opacity: 1;
   }
+
+  .contact__item--soon {
+    background: none;
+    border: none;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .contact__toast {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    font-family: var(--font-main);
+    font-size: 1rem;
+    color: var(--color-text);
+    background: var(--color-bg);
+    border: 1px solid var(--color-line);
+    border-radius: 8px;
+    padding: 1.5rem 2.5rem;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 300;
+    pointer-events: none;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  }
+
+  .contact__toast.is-visible {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
 </style>
+
+<script>
+  document.querySelectorAll('[data-coming-soon]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const toast = document.getElementById('coming-soon-toast');
+      if (!toast) return;
+      toast.classList.add('is-visible');
+      setTimeout(() => toast.classList.remove('is-visible'), 2000);
+    });
+  });
+</script>
