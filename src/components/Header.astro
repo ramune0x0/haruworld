@@ -10,6 +10,7 @@ const navItems = [
 const currentPath = Astro.url.pathname;
 ---
 
+<!-- PC: サイドナビ -->
 <nav class="sidenav">
   <div class="sidenav__links">
     {
@@ -17,6 +18,23 @@ const currentPath = Astro.url.pathname;
         <a
           href={item.href}
           class:list={['sidenav__link', { 'is-active': currentPath === item.href }]}
+        >
+          {item.label}
+        </a>
+      ))
+    }
+  </div>
+</nav>
+
+<!-- モバイル: トップバー -->
+<nav class="topnav">
+  <a href="/" class="topnav__home">Haruworld</a>
+  <div class="topnav__links">
+    {
+      navItems.filter((item) => item.href !== '/').map((item) => (
+        <a
+          href={item.href}
+          class:list={['topnav__link', { 'is-active': currentPath === item.href }]}
         >
           {item.label}
         </a>
@@ -64,9 +82,51 @@ const currentPath = Astro.url.pathname;
     color: var(--color-accent);
   }
 
+  /* ─── モバイル: トップバー ─── */
+  .topnav {
+    display: none;
+  }
+
   @media (max-width: 768px) {
     .sidenav {
       display: none;
+    }
+
+    .topnav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--color-line);
+      position: sticky;
+      top: 0;
+      background: var(--color-bg);
+      z-index: 100;
+    }
+
+    .topnav__home {
+      font-family: var(--font-main);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .topnav__links {
+      display: flex;
+      gap: 1.25rem;
+    }
+
+    .topnav__link {
+      font-family: var(--font-main);
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+      letter-spacing: 0.05em;
+      transition: color 0.3s ease;
+    }
+
+    .topnav__link:hover,
+    .topnav__link.is-active {
+      color: var(--color-accent);
     }
   }
 </style>
