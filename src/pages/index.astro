@@ -184,8 +184,38 @@ const navItems = [
     startOpening();
   }
 
+  function showHomeImmediate(): void {
+    const loader = document.getElementById('loader');
+    const home = document.getElementById('home');
+    const homeRole = document.getElementById('home-role');
+    const homeName = document.getElementById('home-name');
+    const homeLine = document.getElementById('home-line');
+    const homeNav = document.getElementById('home-nav');
+
+    if (!home || !homeRole || !homeName || !homeLine || !homeNav) return;
+
+    if (loader) {
+      loader.style.display = 'none';
+    }
+
+    home.classList.add('is-visible');
+    homeRole.classList.add('is-visible');
+    homeName.classList.add('is-visible');
+    homeLine.classList.add('is-visible');
+
+    const cursor = homeName.querySelector('.home__cursor') as HTMLElement;
+    if (cursor) {
+      cursor.classList.remove('is-typing');
+      cursor.classList.add('is-idle');
+    }
+
+    homeNav.querySelectorAll('.home__nav-item').forEach((item) => {
+      (item as HTMLElement).classList.add('is-visible');
+    });
+  }
+
   initHome();
-  document.addEventListener('astro:after-swap', initHome);
+  document.addEventListener('astro:after-swap', showHomeImmediate);
 </script>
 
 <style>
