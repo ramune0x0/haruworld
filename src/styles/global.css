@@ -153,6 +153,11 @@ h3 {
     margin-right: 0;
   }
 
+  .page {
+    justify-content: flex-start;
+    padding-top: 2rem;
+  }
+
   .page__number {
     font-size: 4rem;
   }
