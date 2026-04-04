@@ -24,8 +24,7 @@ const links = [
     name: 'Email',
     icon: 'mdi:email-outline',
     color: '#4285F4',
-    url: '#',
-    email: 'h.minemura.0x@gmail.com',
+    url: 'mailto:h.minemura.0x@gmail.com',
   },
 ] as const;
 ---
@@ -41,16 +40,6 @@ const links = [
               style={`--brand-color: ${link.color}`}
               type="button"
               data-coming-soon
-            >
-              <Icon name={link.icon} class="contact__icon" />
-              <span class="contact__name">{link.name}</span>
-            </button>
-          ) : 'email' in link && link.email ? (
-            <button
-              class="contact__item contact__item--soon"
-              style={`--brand-color: ${link.color}`}
-              type="button"
-              data-email={link.email}
             >
               <Icon name={link.icon} class="contact__icon" />
               <span class="contact__name">{link.name}</span>
@@ -74,10 +63,6 @@ const links = [
   <p class="contact__copy">&copy; 2026 Haruworld</p>
 </div>
 <div class="contact__toast" id="coming-soon-toast">準備中です。。＞＜</div>
-<div class="contact__toast contact__toast--email" id="email-toast">
-  <span class="contact__email-text">h.minemura.0x@gmail.com</span>
-  <button class="contact__email-copy" id="email-copy-btn" type="button">Copy</button>
-</div>
 
 <style>
   .contact {
@@ -172,75 +157,32 @@ const links = [
     pointer-events: auto;
   }
 
-  .contact__toast--email {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-
-  .contact__email-text {
-    font-family: var(--font-main);
-    font-size: 0.9rem;
-    color: var(--color-text);
-    user-select: all;
-  }
-
-  .contact__email-copy {
-    font-family: var(--font-main);
-    font-size: 0.75rem;
-    color: var(--color-bg);
-    background: var(--color-text);
-    border: none;
-    border-radius: 4px;
-    padding: 0.4rem 0.75rem;
-    cursor: pointer;
-    transition: opacity 0.2s ease;
-    white-space: nowrap;
-  }
-
-  .contact__email-copy:hover {
-    opacity: 0.7;
-  }
 </style>
 
 <script>
-  function hideAllToasts(): void {
-    document.querySelectorAll('.contact__toast').forEach((t) => t.classList.remove('is-visible'));
+  function initContact(): void {
+    function hideAllToasts(): void {
+      document.querySelectorAll('.contact__toast').forEach((t) => t.classList.remove('is-visible'));
+    }
+
+    document.querySelectorAll('[data-coming-soon]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        hideAllToasts();
+        const toast = document.getElementById('coming-soon-toast');
+        if (!toast) return;
+        toast.classList.add('is-visible');
+        setTimeout(() => toast.classList.remove('is-visible'), 2000);
+      });
+    });
+
+    document.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest('.contact__toast') && !target.closest('[data-coming-soon]')) {
+        hideAllToasts();
+      }
+    });
   }
 
-  document.querySelectorAll('[data-coming-soon]').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      hideAllToasts();
-      const toast = document.getElementById('coming-soon-toast');
-      if (!toast) return;
-      toast.classList.add('is-visible');
-      setTimeout(() => toast.classList.remove('is-visible'), 2000);
-    });
-  });
-
-  document.querySelectorAll('[data-email]').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      hideAllToasts();
-      const toast = document.getElementById('email-toast');
-      if (!toast) return;
-      toast.classList.add('is-visible');
-    });
-  });
-
-  document.getElementById('email-copy-btn')?.addEventListener('click', () => {
-    const btn = document.getElementById('email-copy-btn');
-    navigator.clipboard.writeText('h.minemura.0x@gmail.com');
-    if (btn) btn.textContent = 'Copied!';
-    setTimeout(() => {
-      if (btn) btn.textContent = 'Copy';
-      document.getElementById('email-toast')?.classList.remove('is-visible');
-    }, 1500);
-  });
-
-  document.addEventListener('click', (e) => {
-    const target = e.target as HTMLElement;
-    if (!target.closest('.contact__toast') && !target.closest('[data-email]') && !target.closest('[data-coming-soon]')) {
-      hideAllToasts();
-    }
-  });
+  initContact();
+  document.addEventListener('astro:after-swap', initContact);
 </script>
