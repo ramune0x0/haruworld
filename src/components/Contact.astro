@@ -21,10 +21,18 @@ const links = [
     url: 'https://www.instagram.com/0xhar_u/',
   },
   {
+    name: 'Discord',
+    icon: 'simple-icons:discord',
+    color: '#5865F2',
+    url: 'https://discord.com/users/1321392421581357146',
+  },
+  {
     name: 'Email',
     icon: 'mdi:email-outline',
     color: '#4285F4',
-    url: 'mailto:h.minemura.0x@gmail.com',
+    url: '#',
+    emailUser: 'h.minemura.0x',
+    emailDomain: 'gmail.com',
   },
 ] as const;
 ---
@@ -32,32 +40,46 @@ const links = [
 <div class="contact" data-animate>
   <ul class="contact__list">
     {
-      links.map((link) => (
-        <li>
-          {'comingSoon' in link && link.comingSoon ? (
-            <button
-              class="contact__item contact__item--soon"
-              style={`--brand-color: ${link.color}`}
-              type="button"
-              data-coming-soon
-            >
-              <Icon name={link.icon} class="contact__icon" />
-              <span class="contact__name">{link.name}</span>
-            </button>
-          ) : (
-            <a
-              href={link.url}
-              class="contact__item"
-              style={`--brand-color: ${link.color}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Icon name={link.icon} class="contact__icon" />
-              <span class="contact__name">{link.name}</span>
-            </a>
-          )}
-        </li>
-      ))
+      links.map((link) => {
+        const isEmail = 'emailUser' in link;
+        return (
+          <li>
+            {'comingSoon' in link && link.comingSoon ? (
+              <button
+                class="contact__item contact__item--soon"
+                style={`--brand-color: ${link.color}`}
+                type="button"
+                data-coming-soon
+              >
+                <Icon name={link.icon} class="contact__icon" />
+                <span class="contact__name">{link.name}</span>
+              </button>
+            ) : isEmail ? (
+              <a
+                href={link.url}
+                class="contact__item"
+                style={`--brand-color: ${link.color}`}
+                data-email-user={link.emailUser}
+                data-email-domain={link.emailDomain}
+              >
+                <Icon name={link.icon} class="contact__icon" />
+                <span class="contact__name">{link.name}</span>
+              </a>
+            ) : (
+              <a
+                href={link.url}
+                class="contact__item"
+                style={`--brand-color: ${link.color}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Icon name={link.icon} class="contact__icon" />
+                <span class="contact__name">{link.name}</span>
+              </a>
+            )}
+          </li>
+        );
+      })
     }
   </ul>
   <p class="contact__copy">&copy; 2026 Haruworld</p>
@@ -164,6 +186,14 @@ const links = [
     function hideAllToasts(): void {
       document.querySelectorAll('.contact__toast').forEach((t) => t.classList.remove('is-visible'));
     }
+
+    document.querySelectorAll<HTMLAnchorElement>('[data-email-user][data-email-domain]').forEach((el) => {
+      const user = el.dataset.emailUser;
+      const domain = el.dataset.emailDomain;
+      if (user && domain) {
+        el.href = `mailto:${user}@${domain}`;
+      }
+    });
 
     document.querySelectorAll('[data-coming-soon]').forEach((btn) => {
       btn.addEventListener('click', () => {
