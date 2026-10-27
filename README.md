@@ -5,16 +5,18 @@
 ## Tech Stack
 
 - [Astro](https://astro.build/) - 静的サイトジェネレーター
-- Vanilla CSS (Scoped Styles + CSS Variables)
-- [astro-icon](https://www.astroicon.dev/) + [Iconify](https://iconify.design/) (Simple Icons / MDI)
+- Vanilla CSS (グローバル CSS + CSS Variables。ビルド時に各ページへ inline)
 - Cloudflare Pages (Hosting)
 
 ## Fonts
 
-- [Courier Prime](https://fonts.google.com/specimen/Courier+Prime) - メインフォント (タイプライター)
-- [VT323](https://fonts.google.com/specimen/VT323) - セクション番号・ラベル (ターミナル)
-- [M PLUS 1 Code](https://fonts.google.com/specimen/M+PLUS+1+Code) - 日本語見出し (等幅)
-- [Noto Sans JP](https://fonts.google.com/noto/specimen/Noto+Sans+JP) - 日本語本文
+見出しだけセルフホストし、本文は OS のフォントを使う。
+
+- [DotGothic16](https://fonts.google.com/specimen/DotGothic16) - 日本語・英数字の見出し
+- [Silkscreen](https://fonts.google.com/specimen/Silkscreen) - HUD の英字ラベル
+
+サイトに現れる文字だけにサブセット化した woff2 を `src/assets/fonts/` に置く。文言を変えたら `pnpm build` → `pnpm fonts` → `pnpm build` で再生成する。
+経緯は [ADR 0001](docs/adr/0001-heading-font-subsetting.md)。
 
 ## Commands
 
@@ -24,3 +26,5 @@
 | `pnpm dev` | 開発サーバー起動 (`localhost:4321`) |
 | `pnpm build` | 本番ビルド (`./dist/`) |
 | `pnpm preview` | ビルド結果のプレビュー |
+| `pnpm fonts` | `dist/` の文字から見出しフォントを再生成 (要 uv) |
+| `pnpm fonts:check` | 生成済みフォントが `dist/` の文字を網羅しているか検証 |
