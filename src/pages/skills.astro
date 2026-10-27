@@ -1,21 +1,68 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Header from '../components/Header.astro';
-import Skills from '../components/Skills.astro';
-import Footer from '../components/Footer.astro';
+import TopBar from '../components/TopBar.astro';
+import Screen from '../components/Screen.astro';
+import '../styles/screen.css';
 ---
 
 <Layout title="Skills — Haruworld" variant="screen">
-  <Header />
-  <div class="site-main">
-    <div class="page">
-      <div class="page__header" data-animate>
-        <span class="page__number">03</span>
-        <h1 class="page__title">Skills</h1>
-        <p class="page__desc">触ってきたもの</p>
-      </div>
-      <Skills />
-      <Footer />
+  <TopBar current="skills" />
+
+  <Screen
+    scene="SCENE 03 / SKILLS"
+    heading="SKILLS"
+    hud="STATUS / LV 19"
+    label="Skills"
+    commands={[
+      { href: '/projects/', label: 'Back: Projects' },
+      { href: '/contact/', label: 'Next: Contact' },
+    ]}
+  >
+    <div class="status-groups">
+      <section class="status-group">
+        <h3>LANGUAGE</h3>
+        <div class="status">
+          <div class="status__row"><b>C<small>42 Tokyo</small></b><div class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div></div>
+          <div class="status__row"><b>C++<small>42 Tokyo</small></b><div class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div></div>
+          <div class="status__row"><b>TypeScript<small>インターン・受託</small></b><div class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div></div>
+          <div class="status__row"><b>C#<small>ハッカソン</small></b><div class="meter"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div></div>
+        </div>
+      </section>
+      <section class="status-group">
+        <h3>INFRA / CI</h3>
+        <div class="status">
+          <div class="status__row"><b>Terraform<small>インターン</small></b><div class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div></div>
+          <div class="status__row"><b>GCP<small>インターン</small></b><div class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div></div>
+          <div class="status__row"><b>GitHub Actions<small>tfaction・CI 設計</small></b><div class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div></div>
+          <div class="status__row"><b>Docker<small>42 Tokyo・インターン</small></b><div class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div></div>
+        </div>
+      </section>
+      <section class="status-group">
+        <h3>APP / TOOL</h3>
+        <div class="status">
+          <div class="status__row"><b>Next.js<small>受託・インターン</small></b><div class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div></div>
+          <div class="status__row"><b>n8n<small>インターン</small></b><div class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div></div>
+          <div class="status__row"><b>Astro<small>このサイト</small></b><div class="meter"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div></div>
+          <div class="status__row"><b>Unity<small>ハッカソン</small></b><div class="meter"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div></div>
+        </div>
+      </section>
+      <section class="status-group">
+        <h3>DESIGN</h3>
+        <div class="status">
+          <div class="status__row"><b>Figma<small>ロゴ・仮案</small></b><div class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div></div>
+          <div class="status__row"><b>UI デザイン<small>受託・ハッカソン</small></b><div class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div></div>
+          <div class="status__row"><b>ロゴ制作<small>受託</small></b><div class="meter"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div></div>
+        </div>
+      </section>
     </div>
-  </div>
+    <section class="equip">
+      <h3>EQUIPMENT</h3>
+      <dl>
+        <div><dt>OS</dt><dd>macOS / Linux (Debian)</dd></div>
+        <div><dt>EDITOR</dt><dd>VS Code / Neovim</dd></div>
+        <div><dt>SHELL</dt><dd>zsh</dd></div>
+        <div><dt>PACKAGE</dt><dd>pnpm / uv / Homebrew</dd></div>
+      </dl>
+    </section>
+  </Screen>
 </Layout>
