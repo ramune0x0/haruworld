@@ -1,20 +1,44 @@
 ---
+// Email は末尾の inline script で実行時に組み立てる。Cloudflare Email Obfuscation は
+// HTML 中のアドレス文字列に反応して JS を注入するため、リテラルを残さない
 import Layout from '../layouts/Layout.astro';
-import Header from '../components/Header.astro';
-import Contact from '../components/Contact.astro';
+import TopBar from '../components/TopBar.astro';
+import Screen from '../components/Screen.astro';
+import '../styles/screen.css';
 ---
 
 <Layout title="Contact — Haruworld" variant="screen">
-  <Header />
-  <div class="site-main">
-    <div class="page">
-      <div class="page__header" data-animate>
-        <span class="page__number">04</span>
-        <h1 class="page__title">Links</h1>
-        <p class="page__desc">ここにいます</p>
-      </div>
-      <Contact />
-    </div>
-  </div>
-</Layout>
+  <TopBar current="contact" />
 
+  <Screen
+    scene="SCENE 04 / CONTACT"
+    heading="CONTACT"
+    hud="LINKS / 06"
+    label="Contact"
+    center
+    commands={[
+      { href: '/skills/', label: 'Back: Skills' },
+      { href: '/', label: 'Title' },
+    ]}
+  >
+    <div class="talk">
+      <nav class="choice" aria-label="連絡先">
+        <a href="https://github.com/ramune0x0"><strong>GitHub</strong><small>ramune0x0</small></a>
+        <a href="https://x.com/_ramune0x0"><strong>X</strong><small>_ramune0x0</small></a>
+        <a href="https://www.instagram.com/0xhar_u/"><strong>Instagram</strong><small>0xhar_u</small></a>
+        <a href="https://discord.com/users/1321392421581357146"><strong>Discord</strong><small>DM</small></a>
+        <a href="https://zenn.dev/ramune_mochi"><strong>Zenn</strong><small>ramune_mochi</small></a>
+        <a href="#" data-email-user="h.minemura.0x" data-email-domain="gmail.com"><strong>Email</strong><small data-email-text>h.minemura.0x [at] gmail.com</small></a>
+      </nav>
+    </div>
+  </Screen>
+
+  <script is:inline>
+    for (const el of document.querySelectorAll('[data-email-user][data-email-domain]')) {
+      const address = `${el.dataset.emailUser}@${el.dataset.emailDomain}`;
+      el.href = `mailto:${address}`;
+      const text = el.querySelector('[data-email-text]');
+      if (text) text.textContent = address;
+    }
+  </script>
+</Layout>
