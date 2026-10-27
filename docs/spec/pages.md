@@ -27,6 +27,7 @@ flowchart LR
 | `/contact/` | 選択肢ウィンドウ (6 件) | `LINKS / 06` | Back: Skills / Title |
 
 - 全ページ右上の日付はビルド日 (Asia/Tokyo、`YYYY.MM.DD`)
+- 読み込み演出は `.wrap` の子を 1 コマずつ順に表示する。先頭の HUD 帯だけは即表示 (全要素が透明から始まると Chrome が FCP / LCP を記録しないため)
 - `/works` は `public/_redirects` で `/projects/` へ 301
 - ページタイトルは トップが `Haruworld — Engineer & Designer`、他は `About — Haruworld` の形式
 

@@ -28,3 +28,4 @@
 | `pnpm preview` | ビルド結果のプレビュー |
 | `pnpm fonts` | `dist/` の文字から見出しフォントを再生成 (要 uv) |
 | `pnpm fonts:check` | 生成済みフォントが `dist/` の文字を網羅しているか検証 |
+| `pnpm perf <url> <label> [latencyMs] [downMbps]` | キャッシュ無しの初回読み込みを 3 回計測して中央値を出す (`scripts/perf/serve-gzip.py` と併用) |
