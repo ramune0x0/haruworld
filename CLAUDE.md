@@ -29,7 +29,7 @@ src/
 ├── layouts/      # 共通レイアウト (Layout.astro)
 ├── pages/        # index, about, projects, skills, contact
 └── styles/       # global.css (共通) / title.css (トップ) / screen.css (画面 4 ページ)
-scripts/          # フォント生成
+scripts/          # フォント生成 (subset-fonts.py) / 速度計測 (perf/)
 ```
 
 ## 守ること

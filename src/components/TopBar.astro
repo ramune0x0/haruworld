@@ -20,9 +20,7 @@ const items: { id: PageId; label: string }[] = [
     current && (
       <nav class="hud">
         {items.map((item) => (
-          <a href={`/${item.id}/`} aria-current={item.id === current ? 'page' : undefined}>
-            {item.label}
-          </a>
+          <a href={`/${item.id}/`} aria-current={item.id === current ? 'page' : undefined}>{item.label}</a>
         ))}
       </nav>
     )

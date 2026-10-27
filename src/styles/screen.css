@@ -324,7 +324,6 @@
   .choice { width: calc(100% - 10px); }
 }
 
-/* ステージが 6 件に増えたので横長カード 2 列にし、4:3 の画面に収める */
 /* 4 件をセーブファイルの一覧 (ぼうけんのしょ) として 1 列に並べ、画面の高さいっぱいに割り付ける */
 .screen__body:has(.stages) { display: grid; grid-template-rows: auto minmax(0, 1fr); }
 
