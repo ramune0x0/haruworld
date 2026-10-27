@@ -1,0 +1,393 @@
+/* トップ: タイトル画面を 1 画面ぴったりに */
+.wrap--title {
+  min-height: 100svh;
+  padding-block: 24px 32px;
+  grid-template-rows: auto 1fr;
+  gap: 32px;
+}
+
+.title {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  gap: 28px;
+  min-height: 0;
+}
+
+.title .frame { aspect-ratio: auto; height: 100%; min-height: 320px; }
+
+.title .start { margin-top: 0; }
+
+/* ---------- ゲーム画面の中に収めるページ共通 ---------- */
+/* 列を minmax(0, 1fr) にしないと、画面の width の % が列幅を押し広げて画面からはみ出す */
+.wrap--screen { gap: 24px; padding-block: 24px 48px; grid-template-columns: minmax(0, 1fr); }
+
+.screen {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  /* ブラウン管テレビの 4:3。高さに合わせて幅を決め、中央に置く。内容が溢れれば縦に伸びる */
+  width: min(100%, calc((100svh - 120px) * 4 / 3));
+  aspect-ratio: 4 / 3;
+  justify-self: center;
+  background: #000;
+  border: 1px solid var(--line);
+}
+
+.screen .section-head { margin-bottom: 20px; }
+
+.screen::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(0deg, rgba(0,0,0,0.18) 0 1px, transparent 1px 3px);
+}
+
+.screen .frame__hud { border-bottom: 1px solid var(--line); }
+
+.screen__body { padding: 24px clamp(18px, 3vw, 36px) 28px; }
+
+/* 画面下のコマンド: ▶ は hover / focus で出る。表示切替は visibility (index.html の理由と同じ) */
+.screen__cmd {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 14px clamp(18px, 3vw, 36px);
+  border-top: 1px solid var(--line);
+}
+
+.screen__cmd a {
+  position: relative;
+  padding-left: 18px;
+  font-family: var(--font-pixel-en);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
+.screen__cmd a::before {
+  content: '▶';
+  position: absolute;
+  left: 0;
+  top: 1px;
+  font-size: 9px;
+  color: var(--cursor);
+  visibility: hidden;
+  animation: blink 1s steps(1) infinite;
+}
+
+.screen__cmd a:hover, .screen__cmd a:focus-visible { color: var(--fg); }
+
+.screen__cmd a:hover::before, .screen__cmd a:focus-visible::before { visibility: visible; }
+
+/* セーブデータ枠: 名前と基本情報を二重枠の窓に */
+.slot {
+  border: 2px solid var(--fg);
+  box-shadow: 0 0 0 3px #000, 0 0 0 5px var(--fg);
+  margin: 5px;
+  padding: 18px 20px 20px;
+  display: grid;
+  gap: 14px;
+  align-content: start;
+}
+
+.slot dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px 16px;
+  font-size: 13px;
+}
+
+.slot dt { font-family: var(--font-pixel-en); font-size: 10px; letter-spacing: 0.1em; color: var(--fg-muted); align-self: baseline; }
+
+.slot dd { margin: 0; font-family: var(--font-pixel-jp); font-size: 15px; }
+
+.frame__title h1 {
+  font-family: var(--font-pixel-jp);
+  font-weight: 400;
+  font-size: clamp(40px, 8vw, 96px);
+  line-height: 1;
+  margin: 0;
+  letter-spacing: 0.02em;
+  text-wrap: balance;
+}
+
+.start {
+  display: flex;
+  gap: 36px;
+  flex-wrap: wrap;
+  margin-top: 28px;
+  padding: 0 4px;
+}
+
+.start a {
+  display: grid;
+  gap: 6px;
+  padding: 8px 0 8px 22px;
+  position: relative;
+  color: var(--fg);
+}
+
+.start a::before {
+  content: '▶';
+  position: absolute;
+  left: 0;
+  top: 10px;
+  font-size: 10px;
+  color: var(--cursor);
+  opacity: 0;
+  animation: blink 1s steps(1) infinite;
+}
+
+.start a:hover::before, .start a:focus-visible::before { opacity: 1; }
+
+.start a strong {
+  font-family: var(--font-pixel-jp);
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 1;
+}
+
+.start a small { color: var(--fg-muted); font-size: 12px; line-height: 1.4; }
+
+.about__id h3 {
+  font-family: var(--font-pixel-jp);
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.log li {
+  position: relative;
+  padding: 0 0 14px 24px;
+  display: grid;
+  gap: 4px;
+}
+
+.log b { font-family: var(--font-pixel-jp); font-weight: 400; font-size: 17px; line-height: 1.3; }
+
+.log p { margin: 0; color: var(--fg-muted); font-size: 12px; line-height: 1.7; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .start a::before { opacity: 0; }
+}
+
+@media (max-width: 600px) {
+  .frame { aspect-ratio: 4 / 3; }
+  .title .frame { aspect-ratio: auto; }
+  .section-head h2 { font-size: 24px; }
+  .topbar nav { gap: 14px; font-size: 10px; }
+  .stage { box-shadow: 4px 4px 0 var(--panel); }
+}
+
+/* ---------- 画面内版の調整 ---------- */
+/* 固有名詞は公式表記で出す。Silkscreen は小文字の字形が無く全部大文字に見えるので DotGothic16 を使う */
+.stack span { font-family: var(--font-pixel-jp); font-size: 12px; letter-spacing: 0; }
+
+.screen .stage { background: #000; }
+
+.screen__body--center { display: grid; grid-template-rows: auto 1fr; }
+
+/* ステージ: クリア状況のラベル */
+.stage__thumb { position: relative; }
+
+.stage__state {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  padding: 4px 6px;
+  background: #000;
+  border: 1px solid var(--fg-muted);
+  color: var(--fg);
+  font-family: var(--font-pixel-en);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+}
+
+.stage__state--now { border-color: var(--cursor); color: var(--cursor); }
+
+/* ステータス: 種別ごとのブロックと装備欄 */
+.status-groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 28px 48px;
+}
+
+.status-group h3 {
+  margin: 0 0 6px;
+  font-family: var(--font-pixel-en);
+  font-weight: 400;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--cursor);
+}
+
+.status-group .status { grid-template-columns: 1fr; gap: 0; }
+
+.status-group .status__row b small { display: block; margin-left: 0; line-height: 1.5; }
+
+.equip { margin-top: 36px; }
+
+.equip h3 {
+  margin: 0 0 12px;
+  font-family: var(--font-pixel-en);
+  font-weight: 400;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--cursor);
+}
+
+.equip dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px 24px;
+  padding: 16px 20px;
+  border: 2px solid var(--fg);
+  box-shadow: 0 0 0 3px #000, 0 0 0 5px var(--fg);
+  margin: 5px;
+}
+
+.equip div { display: grid; gap: 4px; }
+
+.equip dt { font-family: var(--font-pixel-en); font-size: 10px; letter-spacing: 0.1em; color: var(--fg-muted); }
+
+.equip dd { margin: 0; font-family: var(--font-pixel-jp); font-size: 15px; }
+
+/* 会話ウィンドウ: 黒地に白の二重枠、右下に ▼ */
+.talk { display: grid; justify-items: center; align-content: center; }
+
+.msg {
+  position: relative;
+  width: 100%;
+  margin: 5px;
+  padding: 22px 28px 30px;
+  border: 2px solid var(--fg);
+  box-shadow: 0 0 0 3px #000, 0 0 0 5px var(--fg);
+  font-family: var(--font-pixel-jp);
+  font-size: clamp(16px, 2vw, 19px);
+  line-height: 2;
+}
+
+.msg .hud { position: absolute; left: 28px; top: -8px; padding: 0 6px; background: #000; }
+
+.msg p { margin: 0; text-wrap: pretty; }
+
+.msg::after {
+  content: '▼';
+  position: absolute;
+  right: 18px;
+  bottom: 8px;
+  font-size: 11px;
+  color: var(--fg);
+  animation: blink 0.8s steps(1) infinite;
+}
+
+/* 選択肢ウィンドウ: index.html のスタートメニューと同じ作法 (▶ は visibility で切替) */
+.choice {
+  display: grid;
+  gap: 6px;
+  margin: 5px 5px 5px;
+  padding: 14px 40px 14px 20px;
+  min-width: 260px;
+  border: 2px solid var(--fg);
+  box-shadow: 0 0 0 3px #000, 0 0 0 5px var(--fg);
+}
+
+.choice a { position: relative; display: grid; padding: 5px 0 5px 26px; color: var(--fg); }
+
+.choice a::before {
+  content: '▶';
+  position: absolute;
+  left: 2px;
+  top: 7px;
+  font-size: 12px;
+  color: var(--cursor);
+  visibility: hidden;
+  animation: blink 1s steps(1) infinite;
+}
+
+.choice a:first-child::before, .choice a:hover::before, .choice a:focus-visible::before { visibility: visible; }
+
+.choice:has(a:hover, a:focus-visible) a:first-child:not(:hover, :focus-visible)::before { visibility: hidden; }
+
+.choice a strong { font-family: var(--font-pixel-jp); font-weight: 400; font-size: 20px; line-height: 1; }
+
+.choice a small { font-family: var(--font-pixel-jp); font-size: 11px; color: var(--fg-muted); margin-top: 4px; }
+
+@media (max-width: 600px) {
+  .msg { padding: 18px 18px 28px; }
+  .choice { width: calc(100% - 10px); }
+}
+
+/* ステージが 6 件に増えたので横長カード 2 列にし、4:3 の画面に収める */
+/* 4 件をセーブファイルの一覧 (ぼうけんのしょ) として 1 列に並べ、画面の高さいっぱいに割り付ける */
+.screen__body:has(.stages) { display: grid; grid-template-rows: auto minmax(0, 1fr); }
+
+.screen__body:has(.stages) .section-head { margin-bottom: 18px; }
+
+.stages { grid-template-columns: minmax(0, 1fr); grid-auto-rows: minmax(0, 1fr); gap: 10px; }
+
+.stage {
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-columns: 44px 176px minmax(0, 1fr);
+  grid-template-areas: "file thumb head" "file thumb body" "file thumb meta";
+  gap: 2px 18px;
+  padding: 9px 18px 8px;
+  align-items: start;
+}
+
+.stage__file {
+  grid-area: file;
+  align-self: center;
+  display: grid;
+  gap: 6px;
+  font-family: var(--font-pixel-en);
+  font-size: 7px;
+  letter-spacing: 0.12em;
+  color: var(--fg-muted);
+}
+
+.stage__file b { font-family: var(--font-pixel-jp); font-weight: 400; font-size: 28px; line-height: 1; color: var(--fg); }
+
+.stage__thumb { grid-area: thumb; aspect-ratio: 16 / 9; align-self: center; font-size: 8px; }
+
+.stage__tech { font-family: var(--font-pixel-jp); font-size: 12px; color: var(--fg-muted); }
+
+.stage h3 { grid-area: head; font-size: 17px; }
+
+.stage h3 small { margin-bottom: 3px; font-family: var(--font-pixel-jp); font-size: 11px; letter-spacing: 0; }
+
+.stage p { grid-area: body; font-size: 13px; line-height: 1.6; }
+
+.stage__meta { grid-area: meta; padding-top: 4px; gap: 8px 12px; align-self: end; }
+
+.stack { gap: 8px; }
+
+.stack span { font-size: 11px; }
+
+.status-groups { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px 24px; }
+
+.status-group .status__row { gap: 10px; padding: 6px 0; }
+
+.status-group .status__row b { font-size: 15px; }
+
+.status-group .status__row b small { font-size: 11px; }
+
+.status-group .meter i { width: 12px; }
+
+.equip { margin-top: 24px; }
+
+@media (max-width: 960px) { .status-groups { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+@media (max-width: 720px) {
+  .stages, .status-groups { grid-template-columns: minmax(0, 1fr); }
+  .screen__body:has(.stages) { display: block; }
+  .stage { grid-template-columns: auto minmax(0, 1fr); grid-template-areas: "file file" "thumb thumb" "head head" "body body" "meta meta"; }
+  .stage__file { display: flex; align-items: baseline; gap: 8px; }
+  .stage__thumb { aspect-ratio: 16 / 9; }
+}

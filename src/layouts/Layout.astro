@@ -1,62 +1,27 @@
 ---
-import { ClientRouter } from 'astro:transitions';
+import FontFaces from '../components/FontFaces.astro';
+import '../styles/global.css';
 
 interface Props {
   title: string;
   description?: string;
+  variant: 'title' | 'screen';
 }
-
-const { title, description = 'Haruworld — Engineer & Designer' } = Astro.props;
+const { title, description = 'Haruworld — Engineer & Designer', variant } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=M+PLUS+1+Code:wght@400;500;700&family=Noto+Sans+JP:wght@400;500&family=VT323&display=swap"
-      rel="stylesheet"
-    />
-    <ClientRouter />
-    <title>{title}</title>
+    <FontFaces inline={variant === 'title'} />
   </head>
   <body>
-    <slot />
-    <script>
-      function initAnimations(): void {
-        const observer = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                const el = entry.target as HTMLElement;
-                const delay = el.dataset.delay;
-                if (delay) {
-                  el.style.transitionDelay = `${delay}ms`;
-                }
-                el.classList.add('is-visible');
-              }
-            });
-          },
-          { threshold: 0.1 },
-        );
-
-        document
-          .querySelectorAll('[data-animate]')
-          .forEach((el) => observer.observe(el));
-      }
-
-      initAnimations();
-      document.addEventListener('astro:after-swap', initAnimations);
-    </script>
+    <div class={`wrap wrap--${variant}`}><slot /></div>
   </body>
 </html>
-
-<style is:global>
-  @import '../styles/global.css';
-</style>

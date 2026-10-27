@@ -7,4 +7,5 @@ export default defineConfig({
   site: 'https://haruworld.nymphaea.dev',
   output: 'static',
   integrations: [icon()],
+  build: { inlineStylesheets: 'always' },
 });
