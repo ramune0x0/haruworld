@@ -10,10 +10,14 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
+    "perf": "node scripts/perf/measure-cold.mjs",
     "fonts": "uv run scripts/subset-fonts.py",
     "fonts:check": "uv run scripts/subset-fonts.py --check"
   },
   "dependencies": {
     "astro": "^6.1.2"
+  },
+  "devDependencies": {
+    "playwright-core": "^1.64.1"
   }
 }

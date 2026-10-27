@@ -32,8 +32,8 @@ SOURCES: dict[str, dict[str, str]] = {
         "ofl_sha256": "86c5e9c9382cdcc5948704fdfe60f2aa164a719746931219a42736ecd9cefbd3",
     },
 }
-# 本文に現れなくても欠けると困る文字 (英数字・URL 記号・ダッシュ・カーソル)
-FIXED_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789./-—&▶:"
+# 本文に現れなくても欠けると困る文字 (英数字・URL 記号・ダッシュ・カーソル・実行時に組み立てる Email の @)
+FIXED_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789./-—&▶:@"
 SKIPPED_TAGS = {"style", "script", "title"}
 LATIN_EXTRA = "—▶"
 LATIN_MAX_CODEPOINT = 0xFF
