@@ -1,21 +1,45 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Header from '../components/Header.astro';
-import About from '../components/About.astro';
-import Footer from '../components/Footer.astro';
+import TopBar from '../components/TopBar.astro';
+import Screen from '../components/Screen.astro';
+import '../styles/screen.css';
 ---
 
 <Layout title="About — Haruworld" variant="screen">
-  <Header />
-  <div class="site-main">
-    <div class="page">
-      <div class="page__header" data-animate>
-        <span class="page__number">01</span>
-        <h1 class="page__title">About</h1>
-        <p class="page__desc">私のこと</p>
+  <TopBar current="about" />
+
+  <Screen
+    scene="SCENE 01 / ABOUT"
+    heading="ABOUT ME"
+    hud="PLAYER / LV 19"
+    label="About"
+    commands={[
+      { href: '/', label: 'Title' },
+      { href: '/projects/', label: 'Next: Projects' },
+    ]}
+  >
+    <div class="about">
+      <div class="about__id slot">
+        <p class="hud hud--on">PLAYER</p>
+        <h3>峯村 春<small>Haru Minemura</small></h3>
+        <dl>
+          <dt>LV</dt><dd>19</dd>
+          <dt>AREA</dt><dd>東京</dd>
+          <dt>GUILD</dt><dd>42 Tokyo / Circle 5</dd>
+          <dt>CLASS</dt><dd>Engineer / Designer</dd>
+          <dt>QUEST</dt><dd>Common Core 修了 (2026 年内)</dd>
+        </dl>
+        <p>2007 年生まれ、東京。通信制高校に通いながら 42 Tokyo で C / C++ と Linux の基礎を身につけました。インターンでは業務自動化とインフラの CI/CD、受託ではフロントエンドとロゴを担当。エンジニアとデザイナーの両方をやっています。</p>
       </div>
-      <About />
-      <Footer />
+      <ol class="log">
+        <li><span class="log__t">2025.04</span><b>42 Tokyo 入学</b><p>高校 3 年と並行。仕様書だけを頼りに C / C++ で bash 風シェルや IRC サーバーを実装。</p></li>
+        <li><span class="log__t">2025.09</span><b>Progate 58 ハッカソン 最優秀賞・企業賞</b><p>5 名で 3D オンライン対戦ゲームを制作。マッチング処理と UI を担当。</p></li>
+        <li><span class="log__t">2025.11</span><b>CODE BLUE 2025 学生スタッフ</b><p>国際セキュリティカンファレンスの運営に参加。</p></li>
+        <li><span class="log__t">2025.12</span><b>インターン / 業務自動化</b><p>受託開発会社で n8n を使った業務自動化 3 件を 1 名で設計・実装・運用。2026.03 まで。</p></li>
+        <li><span class="log__t">2026.02</span><b>受託 / コーポレートサイト制作</b><p>Next.js でフロントエンドを設計・実装して納品。ロゴも制作。</p></li>
+        <li><span class="log__t">2026.03</span><b>S 高等学校 卒業</b><p>角川ドワンゴ学園。</p></li>
+        <li><span class="log__t">2026.05</span><b>インターン / インフラ管理・運用自動化</b><p>スタートアップで GCP の Terraform と tfaction + GitHub Actions の CI/CD を構築。現在。</p></li>
+      </ol>
     </div>
-  </div>
+  </Screen>
 </Layout>
