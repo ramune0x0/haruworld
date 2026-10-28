@@ -1,0 +1,221 @@
+/* トップ: タイトル画面を 1 画面ぴったりに */
+.wrap--title {
+  grid-template-columns: minmax(0, 1fr);
+  min-height: 100svh;
+  padding-block: 24px 32px;
+  grid-template-rows: auto 1fr;
+  gap: 32px;
+}
+
+.title { min-height: 0; }
+
+/* タイトル画面: HUD / タイトル / コマンドウィンドウの 3 段 */
+/* 画面はブラウン管テレビの 4:3。高さに合わせて幅を決め、中央に置く。内容が溢れれば縦に伸びる。
+   160px は枠の上下にある余白 (padding・ロゴ行・gap で約 128px) より大きく取り、端数でページがスクロールしないようにする */
+.title .frame { aspect-ratio: 4 / 3; height: auto; width: min(100%, calc((100svh - 160px) * 4 / 3)); justify-self: center; min-height: 480px; grid-template-rows: auto 1fr auto; border: 1px solid var(--line); }
+
+/* ループザルーム: 一点透視の廊下をまっすぐ歩き続ける。
+   CSS 3D の板 (床・天井・壁) で廊下を 1 本置き、カメラ側をドア間隔 160px だけ前進させて繰り返す。
+   模様が 160px 周期なので継ぎ目なくループする。JS なし */
+.frame--rooms { background: #000; }
+
+.frame--rooms::after {
+  background:
+    repeating-linear-gradient(0deg, rgba(0,0,0,0.22) 0 1px, transparent 1px 3px),
+    radial-gradient(ellipse 55% 55% at 50% 50%, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 45%, rgba(0,0,0,0) 100%);
+}
+
+.cam {
+  --hall-line: rgba(103,77,158,0.55);
+  --hall-light: rgba(242,239,233,0.9);
+  --hall-floor: #1c1727;
+  --hall-wall: #130f1c;
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  perspective: 600px;
+  pointer-events: none;
+}
+
+.world, .hall {
+  position: absolute;
+  transform-style: preserve-3d;
+  transform-origin: 0 0 0;
+}
+
+.world {
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  transform: translateZ(600px);
+  animation: walk 1s linear infinite;
+}
+
+@keyframes walk {
+  from { transform: translateZ(600px) translateZ(0); }
+  to   { transform: translateZ(600px) translateZ(160px); }
+}
+
+.hall i {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-origin: 0 0 0;
+}
+
+/* 床・天井: 中央の列に天井灯とその映り込み。奥の暗さは画面中央の霧 (::after) に任せる */
+.hall .floor, .hall .ceil {
+  width: 320px;
+  height: 3200px;
+  background:
+    repeating-linear-gradient(to bottom, var(--hall-light) 0 6px, transparent 6px 160px),
+    var(--hall-floor);
+  background-size: 12% 100%, auto;
+  background-position: 50% 0, 0 0;
+  background-repeat: no-repeat, repeat;
+}
+
+.hall .floor {
+  transform: translate3d(-160px, 120px, 0) rotateX(-90deg);
+  --hall-light: rgba(242,239,233,0.2);
+}
+
+.hall .ceil {
+  transform: translate3d(-160px, -120px, 0) rotateX(-90deg);
+  --hall-floor: #0d0b12;
+}
+
+/* 壁: 160px ごとにドア枠の線 */
+.hall .wall {
+  width: 3200px;
+  height: 240px;
+  background:
+    repeating-linear-gradient(to right, var(--hall-line) 0 2px, transparent 2px 160px),
+    var(--hall-wall);
+}
+
+.hall .wall--r { transform: translate3d(160px, -120px, 0) rotateY(90deg); }
+
+.hall .wall--l { transform: translate3d(-160px, -120px, 0) rotateY(90deg); }
+
+.hall .wall--end {
+  width: 320px;
+  transform: translate3d(-160px, -120px, -3200px);
+  background: var(--hall-wall);
+}
+
+/* MV の縦書き字幕の位置に、横の余白へ縦のラベル */
+.side {
+  position: absolute;
+  top: 50%;
+  translate: 0 -50%;
+  margin: 0;
+  writing-mode: vertical-rl;
+  z-index: 1;
+}
+
+.side--l { left: 18px; }
+
+.side--r { right: 18px; }
+
+/* 廊下の突き当たり: 黒い部屋にタイトル */
+.frame--rooms .frame__title {
+  justify-self: center;
+  text-align: center;
+  background: #000;
+  border: 1px solid var(--fg-muted);
+  padding: 26px clamp(18px, 4vw, 40px);
+  width: max-content;
+  max-width: calc(100% - 72px);
+}
+
+.frame--rooms .frame__hud { background: #000; border-bottom: 1px solid var(--line); }
+
+.frame__title h1 {
+  font-family: var(--font-pixel-jp);
+  font-weight: 400;
+  font-size: clamp(36px, 6.5vw, 80px);
+  line-height: 1;
+  margin: 0;
+  letter-spacing: 0.02em;
+  text-wrap: balance;
+}
+
+/* コマンドウィンドウ: 黒地に白の二重枠、縦並び、▶ カーソルは先頭に置き hover / focus で移る */
+.start {
+  position: relative;
+  z-index: 1;
+  justify-self: center;
+  display: grid;
+  gap: 6px;
+  margin: 0 24px 32px;
+  padding: 14px 40px 14px 20px;
+  max-width: calc(100% - 58px);
+  background: #000;
+  border: 2px solid var(--fg);
+  box-shadow: 0 0 0 3px #000, 0 0 0 5px var(--fg);
+}
+
+.start a {
+  display: grid;
+  padding: 5px 0 5px 26px;
+  position: relative;
+  color: var(--fg);
+}
+
+.start a::before {
+  content: '▶';
+  position: absolute;
+  left: 2px;
+  top: 7px;
+  font-size: 12px;
+  color: var(--cursor);
+  visibility: hidden;
+  animation: blink 1s steps(1) infinite;
+}
+
+/* 表示切替は opacity でなく visibility。点滅が opacity を合成層で動かすので、hover で基準値を変えると古い値が残る */
+.start a:first-child::before, .start a:hover::before, .start a:focus-visible::before { visibility: visible; }
+
+.start:has(a:hover, a:focus-visible) a:first-child:not(:hover, :focus-visible)::before { visibility: hidden; }
+
+.start a strong {
+  font-family: var(--font-pixel-jp);
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.about__id h3 {
+  font-family: var(--font-pixel-jp);
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 1.1;
+  margin: 10px 0 16px;
+}
+
+.log li {
+  position: relative;
+  padding: 0 0 22px 24px;
+  display: grid;
+  gap: 4px;
+}
+
+.log b { font-family: var(--font-pixel-jp); font-weight: 400; font-size: 18px; line-height: 1.3; }
+
+.log p { margin: 0; color: var(--fg-muted); font-size: 13px; line-height: 1.8; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+@media (max-width: 600px) {
+  .frame { aspect-ratio: 4 / 3; }
+  .title .frame { aspect-ratio: auto; }
+  .start { margin: 0 16px 24px; max-width: calc(100% - 42px); }
+  .side { display: none; }
+  .frame--rooms .frame__title { max-width: calc(100% - 32px); }
+  .section-head h2 { font-size: 24px; }
+  .stage { box-shadow: 4px 4px 0 var(--panel); }
+}

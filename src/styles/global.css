@@ -1,164 +1,354 @@
-/* ─── CSS Variables ─── */
+/* レイアウト: 映画のワンシーン (レターボックス + 字幕) の上に 8bit の HUD を重ねる。単一ダークテーマ。 */
 :root {
-  --color-bg: #fff;
-  --color-text: #1a1a1a;
-  --color-text-muted: #999;
-  --color-accent: #7b68a8;
-  --color-line: #e8e5e0;
-  --font-main: 'VT323', monospace;
-  --font-jp: 'M PLUS 1 Code', monospace;
-  --font-body: 'Noto Sans JP', sans-serif;
-  --max-width: 900px;
-  --nav-width: 72px;
-  --page-padding: 4rem;
+  --bg: #0a0a0f;
+  --bg-film: #121017;
+  --panel: #674D9E;
+  --panel-deep: #3b2a63;
+  --cursor: #ACFF09;
+  --fg: #f2efe9;
+  --fg-muted: #8f8a9c;
+  --line: #2a2634;
+  --font-pixel-jp: 'DotGothic16', 'Noto Sans JP', sans-serif;
+  --font-pixel-en: 'Silkscreen', 'DotGothic16', monospace;
+  --font-body: 'Hiragino Sans', 'Noto Sans JP', 'Noto Sans CJK JP', 'Yu Gothic', 'Meiryo', system-ui, sans-serif;
+  color-scheme: dark;
 }
 
-/* ─── Reset ─── */
-*,
-*::before,
-*::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
   font-family: var(--font-body);
-  font-weight: 400;
-  color: var(--color-text);
-  background-color: var(--color-bg);
-  line-height: 1.8;
-  word-break: auto-phrase;
-  overflow-wrap: anywhere;
+  font-size: 15px;
+  line-height: 1.9;
   -webkit-font-smoothing: antialiased;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
+a { color: inherit; text-decoration: none; }
 
-ul {
-  list-style: none;
-}
+a:focus-visible, button:focus-visible { outline: 2px solid var(--cursor); outline-offset: 3px; }
 
-img {
-  display: block;
-  max-width: 100%;
-}
-
-/* ─── Typography ─── */
-h1,
-h2,
-h3 {
-  font-family: var(--font-main), var(--font-jp);
-  font-weight: 700;
-  line-height: 1.3;
-}
-
-/* ─── Site main (nav offset) ─── */
-.site-main {
-  margin-right: var(--nav-width);
-}
-
-/* ─── Page wrapper ─── */
-.page {
-  min-height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: var(--page-padding);
-  max-width: var(--max-width);
+.wrap {
+  max-width: 1080px;
   margin: 0 auto;
-  position: relative;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 24px 96px;
+  display: grid;
+  gap: 72px;
 }
 
-/* ─── Decorative line ─── */
-.deco-line {
-  display: block;
-  width: 100%;
-  height: 1px;
-  background: var(--color-line);
-  border: none;
-  margin: 3rem 0;
-}
-
-/* ─── Back link (sub pages) ─── */
-.back-link {
-  font-family: var(--font-main);
-  font-size: 0.8rem;
-  color: var(--color-text-muted);
-  letter-spacing: 0.1em;
-  transition: color 0.3s ease;
-  display: inline-block;
-  margin-bottom: 3rem;
-}
-
-.back-link:hover {
-  color: var(--color-text);
-}
-
-/* ─── Section header (sub pages) ─── */
-.page__header {
-  margin-bottom: 4rem;
-}
-
-.page__number {
-  font-family: var(--font-main);
-  font-size: 6rem;
-  font-weight: 400;
-  color: var(--color-line);
-  line-height: 0.8;
-  letter-spacing: -0.03em;
-  user-select: none;
-}
-
-.page__title {
-  font-family: var(--font-main);
-  font-size: 1.25rem;
-  font-weight: 400;
-  color: var(--color-text-muted);
-  letter-spacing: 0.2em;
+/* ---------- HUD 共通 ---------- */
+.hud {
+  font-family: var(--font-pixel-en);
+  font-size: 11px;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  margin-top: 0.5rem;
+  color: var(--fg-muted);
+  line-height: 1;
 }
 
-.page__desc {
-  font-family: var(--font-body);
-  font-size: 0.75rem;
-  color: var(--color-text-muted);
-  margin-top: 0.25rem;
+.hud--on { color: var(--cursor); }
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 12px;
+  margin-bottom: 28px;
 }
 
-/* ─── Fade-in Animation ─── */
-[data-animate] {
+.section-head h2 {
+  font-family: var(--font-pixel-jp);
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 1;
+  margin: 0;
+  letter-spacing: 0.02em;
+}
+
+.section-head .hud { margin-left: auto; }
+
+/* ---------- トップ: タイトル画面 ---------- */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.topbar .logo {
+  font-family: var(--font-pixel-jp);
+  font-size: 18px;
+  letter-spacing: 0.04em;
+}
+
+.topbar nav { display: flex; gap: 22px; flex-wrap: wrap; }
+
+.topbar nav a { position: relative; padding: 6px 0; }
+
+.topbar nav a::before {
+  content: '▶';
+  position: absolute;
+  left: -14px;
+  color: var(--cursor);
   opacity: 0;
-  transform: translateY(12px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  font-size: 8px;
+  top: 8px;
 }
 
-[data-animate].is-visible {
-  opacity: 1;
-  transform: translateY(0);
+.topbar nav a:hover { color: var(--fg); }
+
+.topbar nav a:hover::before, .topbar nav a[aria-current="page"]::before { opacity: 1; }
+
+.topbar nav a[aria-current="page"] { color: var(--fg); }
+
+.frame {
+  position: relative;
+  aspect-ratio: 21 / 9;
+  max-width: 100%;
+  background:
+    radial-gradient(ellipse 70% 90% at 65% 40%, #2b1f3f 0%, rgba(43,31,63,0) 60%),
+    radial-gradient(ellipse 50% 60% at 20% 80%, #1d1a12 0%, rgba(29,26,18,0) 70%),
+    var(--bg-film);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: auto 1fr;
 }
 
-/* ─── Responsive ─── */
-@media (max-width: 768px) {
-  :root {
-    --nav-width: 0px;
-    --page-padding: 2rem 1.5rem;
-  }
-
-  .site-main {
-    margin-right: 0;
-  }
-
-  .page {
-    justify-content: flex-start;
-    padding-top: 2rem;
-  }
-
-  .page__number {
-    font-size: 4rem;
-  }
+.frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse 100% 100% at 50% 50%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.6) 100%);
 }
+
+.frame__hud {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 18px;
+  position: relative;
+  z-index: 1;
+}
+
+.frame__title {
+  align-self: center;
+  padding: 0 clamp(18px, 6vw, 72px);
+  position: relative;
+  z-index: 1;
+}
+
+.frame__title .hud { margin-bottom: 14px; }
+
+.frame__title h1 .cur {
+  display: inline-block;
+  width: 0.5em;
+  height: 0.9em;
+  background: var(--cursor);
+  vertical-align: -0.08em;
+  margin-left: 0.12em;
+  animation: blink 1s steps(1) infinite;
+}
+
+.frame__title p {
+  margin: 14px 0 0;
+  color: var(--fg-muted);
+  font-size: 14px;
+  max-width: 36em;
+}
+
+/* Netflix 風字幕: 白・中太・黒の縁取り・下中央 */
+.subtitle {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 0 18px 28px;
+  min-height: 92px;
+  display: grid;
+  align-items: end;
+}
+
+.subtitle span {
+  grid-area: 1 / 1;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: clamp(15px, 2.2vw, 22px);
+  line-height: 1.6;
+  color: #fff;
+  text-shadow:
+    0 0 2px #000, 0 0 2px #000, 0 0 2px #000,
+    0 2px 6px rgba(0,0,0,0.9);
+  animation: cue 0.6s steps(3) 0.6s both;
+}
+
+@keyframes cue { from { opacity: 0; } to { opacity: 1; } }
+
+@keyframes blink { 50% { opacity: 0; } }
+
+/* ---------- About me: セーブデータ画面 ---------- */
+.about {
+  display: grid;
+  grid-template-columns: minmax(240px, 1fr) 2fr;
+  gap: 40px 56px;
+}
+
+.about__id h3 small {
+  display: block;
+  font-family: var(--font-pixel-en);
+  font-size: 11px;
+  color: var(--fg-muted);
+  letter-spacing: 0.1em;
+  margin-top: 8px;
+}
+
+.about__id p:not(.hud) { margin: 0; color: var(--fg-muted); font-size: 14px; line-height: 1.9; }
+
+.log {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-left: 2px solid var(--line);
+}
+
+.log li::before {
+  content: '';
+  position: absolute;
+  left: -7px;
+  top: 6px;
+  width: 12px; height: 12px;
+  background: var(--bg);
+  border: 2px solid var(--fg);
+}
+
+.log li:first-child::before { background: var(--cursor); border-color: var(--cursor); }
+
+.log__t { font-family: var(--font-pixel-en); font-size: 10px; color: var(--cursor); letter-spacing: 0.1em; }
+
+/* ---------- Projects: ステージセレクト ---------- */
+.stages {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 28px 24px;
+}
+
+.stage {
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  gap: 14px;
+  padding: 20px 20px 18px;
+  border: 2px solid var(--fg);
+  background: var(--bg);
+  box-shadow: 6px 6px 0 var(--panel);
+  transition: transform 0.08s steps(2), box-shadow 0.08s steps(2);
+  min-width: 0;
+}
+
+.stage:hover { transform: translate(-2px, -2px); box-shadow: 10px 10px 0 var(--panel); }
+
+.stage__thumb {
+  aspect-ratio: 16 / 9;
+  max-width: 100%;
+  border: 1px solid var(--line);
+  display: grid;
+  place-items: center;
+  background: repeating-linear-gradient(
+    0deg, var(--bg-film) 0 2px, #16131d 2px 4px
+  );
+  color: var(--fg-muted);
+  font-family: var(--font-pixel-en);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+}
+
+.stage__thumb--purple { background: var(--panel-deep); color: var(--fg); }
+
+.stage h3 {
+  font-family: var(--font-pixel-jp);
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 1.25;
+  margin: 0;
+}
+
+.stage h3 small {
+  display: block;
+  font-family: var(--font-pixel-en);
+  font-size: 10px;
+  color: var(--cursor);
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+}
+
+.stage p { margin: 0; color: var(--fg-muted); font-size: 14px; line-height: 1.8; }
+
+.stage__meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+}
+
+.stack { display: flex; gap: 10px; flex-wrap: wrap; }
+
+.stack span { font-family: var(--font-pixel-en); font-size: 10px; color: var(--fg); letter-spacing: 0.06em; }
+
+.links { display: flex; gap: 14px; }
+
+.links a { font-family: var(--font-pixel-en); font-size: 10px; color: var(--cursor); letter-spacing: 0.06em; border-bottom: 1px solid currentColor; }
+
+.links a:hover { background: var(--cursor); color: var(--bg); }
+
+/* ---------- Skills: ステータス画面 (抜粋) ---------- */
+.status {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 10px 48px;
+}
+
+.status__row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 0;
+  border-bottom: 1px dotted var(--line);
+}
+
+.status__row b { font-family: var(--font-pixel-jp); font-weight: 400; font-size: 16px; }
+
+.status__row b small { color: var(--fg-muted); font-size: 12px; margin-left: 10px; font-family: var(--font-body); }
+
+.meter { display: flex; gap: 3px; }
+
+.meter i {
+  width: 14px; height: 10px;
+  border: 1px solid var(--fg-muted);
+}
+
+.meter i.on { background: var(--cursor); border-color: var(--cursor); }
+
+/* ---------- 読み込み演出: 1 コマずつ現れる (JS なし) ---------- */
+.wrap > * { animation: appear 0.3s steps(3) both; }
+
+/* 全要素が opacity 0 から始まると Chrome が FCP / LCP を記録しない (Lighthouse は NO_FCP で止まる) ので、HUD 帯だけ即表示にする */
+.wrap > :first-child { animation: none; }
+
+.wrap > *:nth-child(2) { animation-delay: 0.1s; }
+
+.wrap > *:nth-child(3) { animation-delay: 0.25s; }
+
+.wrap > *:nth-child(4) { animation-delay: 0.4s; }
+
+.wrap > *:nth-child(5) { animation-delay: 0.55s; }
+
+@keyframes appear { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+@media (max-width: 720px) { .about { grid-template-columns: 1fr; } }

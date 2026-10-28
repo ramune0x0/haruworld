@@ -22,3 +22,8 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# 作業メモ・ツール用ディレクトリ
+docs/wip/
+.playwright-mcp/
+.serena/

@@ -1,0 +1,23 @@
+---
+// unicode-range の分割は scripts/subset-fonts.py の Latin/JP 判定と一致させること
+import latinUrl from '../assets/fonts/dotgothic16-latin.woff2?no-inline';
+import jpUrl from '../assets/fonts/dotgothic16-jp.woff2?no-inline';
+import silkUrl from '../assets/fonts/silkscreen-latin.woff2?no-inline';
+import latinData from '../assets/fonts/dotgothic16-latin.woff2?inline';
+import silkData from '../assets/fonts/silkscreen-latin.woff2?inline';
+
+interface Props {
+  /** true のとき Latin 2 面を data URI で埋め込み preload を出さない (トップ用) */
+  inline?: boolean;
+}
+const { inline = false } = Astro.props;
+const LATIN_RANGE = 'U+0000-00FF, U+2014, U+25B6';
+const JP_RANGE = 'U+0100-2013, U+2015-25B5, U+25B7-10FFFF';
+const css = [
+  `@font-face{font-family:'DotGothic16';src:url(${inline ? latinData : latinUrl}) format('woff2');font-weight:400;font-display:${inline ? 'block' : 'swap'};unicode-range:${LATIN_RANGE}}`,
+  `@font-face{font-family:'DotGothic16';src:url(${jpUrl}) format('woff2');font-weight:400;font-display:swap;unicode-range:${JP_RANGE}}`,
+  `@font-face{font-family:'Silkscreen';src:url(${inline ? silkData : silkUrl}) format('woff2');font-weight:400;font-display:swap}`,
+].join('');
+---
+{!inline && [latinUrl, jpUrl, silkUrl].map((href) => <link rel="preload" href={href} as="font" type="font/woff2" crossorigin />)}
+<style set:html={css}></style>
