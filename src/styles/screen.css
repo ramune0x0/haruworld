@@ -298,7 +298,10 @@
   box-shadow: 0 0 0 3px #000, 0 0 0 5px var(--fg);
 }
 
-.choice a { position: relative; display: grid; padding: 5px 0 5px 26px; color: var(--fg); }
+/* 左 26px は ▶ カーソルの列。見出しも同じ列に揃える */
+.choice > * { padding-left: 26px; }
+
+.choice a { position: relative; display: grid; padding-block: 5px; color: var(--fg); }
 
 .choice a::before {
   content: '▶';
@@ -311,9 +314,14 @@
   animation: blink 1s steps(1) infinite;
 }
 
-.choice a:first-child::before, .choice a:hover::before, .choice a:focus-visible::before { visibility: visible; }
+.choice a:first-of-type::before, .choice a:hover::before, .choice a:focus-visible::before { visibility: visible; }
 
-.choice:has(a:hover, a:focus-visible) a:first-child:not(:hover, :focus-visible)::before { visibility: hidden; }
+.choice:has(a:hover, a:focus-visible) a:first-of-type:not(:hover, :focus-visible)::before { visibility: hidden; }
+
+/* 連絡先 / その他の見出し。20px の項目名より一段弱く見せるため HUD 標準の 11px より小さくする。2 つ目以降は前の群との間を空ける */
+.choice .hud { margin: 0; font-size: 9px; }
+
+.choice a + .hud { margin-top: 12px; }
 
 .choice a strong { font-family: var(--font-pixel-jp); font-weight: 400; font-size: 20px; line-height: 1; }
 

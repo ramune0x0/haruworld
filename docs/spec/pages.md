@@ -24,7 +24,7 @@ flowchart LR
 | `/about/` | セーブデータ画面 | `PLAYER / LV 19` | Title / Next: Projects |
 | `/projects/` | セーブファイル一覧 (4 件) | `SAVE DATA / 4 FILES` | Back: About / Next: Skills |
 | `/skills/` | ステータス画面 | `STATUS / LV 19` | Back: Projects / Next: Contact |
-| `/contact/` | 選択肢ウィンドウ (6 件) | `LINKS / 06` | Back: Skills / Title |
+| `/contact/` | 選択肢ウィンドウ (連絡先 4 件 + その他 2 件) | `LINKS / 06` | Back: Skills / Title |
 
 - 全ページ右上の日付はビルド日 (Asia/Tokyo、`YYYY.MM.DD`)
 - 読み込み演出は `.wrap` の子を 1 コマずつ順に表示する。先頭の HUD 帯だけは即表示 (全要素が透明から始まると Chrome が FCP / LCP を記録しないため)
