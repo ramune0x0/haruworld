@@ -10,8 +10,9 @@
 .title { min-height: 0; }
 
 /* タイトル画面: HUD / タイトル / コマンドウィンドウの 3 段 */
-/* 画面はブラウン管テレビの 4:3。高さに合わせて幅を決め、中央に置く。内容が溢れれば縦に伸びる */
-.title .frame { aspect-ratio: 4 / 3; height: auto; width: min(100%, calc((100svh - 120px) * 4 / 3)); justify-self: center; min-height: 480px; grid-template-rows: auto 1fr auto; border: 1px solid var(--line); }
+/* 画面はブラウン管テレビの 4:3。高さに合わせて幅を決め、中央に置く。内容が溢れれば縦に伸びる。
+   160px は枠の上下にある余白 (padding・ロゴ行・gap で約 128px) より大きく取り、端数でページがスクロールしないようにする */
+.title .frame { aspect-ratio: 4 / 3; height: auto; width: min(100%, calc((100svh - 160px) * 4 / 3)); justify-self: center; min-height: 480px; grid-template-rows: auto 1fr auto; border: 1px solid var(--line); }
 
 /* ループザルーム: 一点透視の廊下をまっすぐ歩き続ける。
    CSS 3D の板 (床・天井・壁) で廊下を 1 本置き、カメラ側をドア間隔 160px だけ前進させて繰り返す。
