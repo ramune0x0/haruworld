@@ -7,7 +7,7 @@ nymphaea.dev のポートフォリオサイト。ゲームのタイトル画面�
 - **フレームワーク**: Astro 6.x (静的サイト)
 - **スタイル**: Vanilla CSS (`src/styles/` のグローバル CSS を各ページに inline。Astro のスコープド CSS は使わない)
 - **フォント**: DotGothic16 / Silkscreen のサブセットをセルフホスト (`src/assets/fonts/`)。本文は OS フォント
-- **ホスティング**: Cloudflare Pages
+- **ホスティング**: Vercel (GitHub 連携で main を自動デプロイ)。ドメインと DNS は Cloudflare
 - **パッケージマネージャ**: pnpm / Python スクリプトは uv
 
 ## コマンド
