@@ -5,7 +5,7 @@
 - 静的サイト (Astro)。実行時 JS は Contact の Email 組み立て (inline script) だけ
 - CSS は各ページの `<style>` に inline。外部オリジンへのリクエストは無い
 - 見出しフォント (DotGothic16 / Silkscreen) だけセルフホスト。本文は OS のフォント
-- 全リンクは末尾スラッシュ付きの絶対パス (Cloudflare Pages が `/x/index.html` を `/x/` に正規化するため)
+- 全リンクは末尾スラッシュ付きの絶対パス (ビルド出力が `/x/index.html` で、ホスティングが `/x/` に正規化するため)
 
 ```mermaid
 flowchart LR
@@ -34,7 +34,7 @@ flowchart LR
 ## Contact の Email
 
 `href` と表示文字列を inline script で `h.minemura.0x@gmail.com` に組み立てる。
-Cloudflare Email Obfuscation は HTML 中のアドレス文字列に反応して JS を注入するため、dist の HTML にアドレスのリテラルを残さない。
+Cloudflare のプロキシを通すと Email Obfuscation が HTML 中のアドレス文字列に反応して JS を注入するため、dist の HTML にアドレスのリテラルを残さない (現在はプロキシ無しで Vercel が直接配信しているが、再び通しても壊れないようにしておく)。
 JS 無効時は `h.minemura.0x [at] gmail.com` と表示され、リンク先は `#` のまま。
 
 ## 性能予算
@@ -49,7 +49,7 @@ JS 無効時は `h.minemura.0x [at] gmail.com` と表示され、リンク先は
 | load | — | 1,200ms 以下 |
 
 `/` は Latin 2 面のフォントを data URI で HTML に埋め込み 1 リクエストにする。
-画面ページは woff2 3 本を preload する。woff2 は `/_astro/` 配下で、`public/_headers` により `immutable` で配信する。
+画面ページは woff2 3 本を preload する。woff2 はハッシュ付きファイル名で `/_astro/` 配下に出力され、Vercel が `immutable` で配信する。
 
 ## フォントの再生成
 

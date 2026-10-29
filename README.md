@@ -6,7 +6,7 @@
 
 - [Astro](https://astro.build/) - 静的サイトジェネレーター
 - Vanilla CSS (グローバル CSS + CSS Variables。ビルド時に各ページへ inline)
-- Cloudflare Pages (Hosting)
+- Vercel (Hosting。ドメインと DNS は Cloudflare)
 
 ## Fonts
 
