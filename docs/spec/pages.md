@@ -27,7 +27,7 @@ flowchart LR
 | `/contact/` | 選択肢ウィンドウ (連絡先 4 件 + その他 2 件) | `LINKS / 06` | Back: Skills / Title |
 
 - 全ページ右上の日付はビルド日 (Asia/Tokyo、`YYYY.MM.DD`)
-- 読み込み演出は `.wrap` の子を 1 コマずつ順に表示する。先頭の HUD 帯だけは即表示 (全要素が透明から始まると Chrome が FCP / LCP を記録しないため)
+- 読み込み演出は無い。全要素を初描画と同時に出す (段階表示は待たされて見えるため廃止。動きは廊下の歩行とカーソルの点滅だけ)
 - `/works/` は `astro.config.mjs` の `redirects` で `/projects/` へ転送 (静的ビルドなので meta refresh + canonical のページ。ホスティングに依存しない)
 - ページタイトルは トップが `Haruworld — Engineer & Designer`、他は `About — Haruworld` の形式
 
