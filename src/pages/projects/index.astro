@@ -86,7 +86,7 @@ const pagingRules = pages
                 ) : (
                   <span class="pager__arrow pager__arrow--prev is-disabled" aria-hidden="true" />
                 )}
-                <span>PAGE {n} / {pages.length}</span>
+                <span>{n} / {pages.length}</span>
                 {n < pages.length ? (
                   <label class="pager__arrow" for={`save-page-${n + 1}`} aria-label="次のページ" />
                 ) : (

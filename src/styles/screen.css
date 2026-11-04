@@ -340,13 +340,13 @@
 .stages { position: relative; grid-template-columns: minmax(0, 1fr); grid-auto-rows: minmax(0, 1fr); gap: 10px; }
 
 /* radio は ← → の移動先として残すので display: none にせず、見えない 1px にする */
-/* ページャと同じ右下に置く。label クリックでブラウザが radio へスクロールしても、押した位置から動かない */
-.stages__radio { position: absolute; right: 0; bottom: 0; width: 1px; height: 1px; margin: 0; opacity: 0; pointer-events: none; }
+/* ページャと同じ中央下に置く。label クリックでブラウザが radio へスクロールしても、押した位置から動かない */
+.stages__radio { position: absolute; left: 50%; bottom: 0; width: 1px; height: 1px; margin: 0; opacity: 0; pointer-events: none; }
 
 /* 表示ページの切替規則 (#save-page-N:checked ~ #save-view-N) は projects/index.astro が生成する。CSS が効かない環境では全ページが縦に並ぶ */
 .stages__page { display: none; grid-template-rows: repeat(var(--page-size), minmax(0, 1fr)) auto; gap: 10px; min-height: 0; }
 
-.pager { grid-row: calc(var(--page-size) + 1); justify-self: end; display: flex; align-items: center; gap: 8px; }
+.pager { grid-row: calc(var(--page-size) + 1); justify-self: center; display: flex; align-items: center; gap: 8px; }
 
 .stages__radio:focus-visible ~ .stages__page .pager { outline: 2px solid var(--cursor); outline-offset: 3px; }
 
