@@ -21,7 +21,7 @@ flowchart LR
 | パス | 画面 | HUD (見出し右) | 画面下のコマンド |
 |---|---|---|---|
 | `/` | タイトル画面 | なし (左上 `SCENE 00 / TITLE`) | ABOUT / PROJECTS / SKILLS / CONTACT のメニュー |
-| `/about/` | セーブデータ画面 | `PLAYER / LV 19` | Title / Next: Projects |
+| `/about/` | セーブデータ画面 (経歴は枠内スクロール。720px 以下は枠を伸ばして全件表示) | `PLAYER / LV 19` | Title / Next: Projects |
 | `/projects/` | セーブファイル一覧 (3 件ずつのページ送り) | `SAVE DATA / 4 FILES` | Back: About / Next: Skills |
 | `/skills/` | ステータス画面 | `STATUS / LV 19` | Back: Projects / Next: Contact |
 | `/contact/` | 選択肢ウィンドウ (連絡先 4 件 + その他 2 件) | `LINKS / 06` | Back: Skills / Title |
