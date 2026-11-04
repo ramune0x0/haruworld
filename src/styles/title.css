@@ -4,7 +4,7 @@
   min-height: 100svh;
   padding-block: 24px 32px;
   grid-template-rows: auto 1fr;
-  gap: 32px;
+  gap: 24px;
 }
 
 .title { min-height: 0; }
