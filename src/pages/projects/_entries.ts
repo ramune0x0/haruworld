@@ -1,4 +1,9 @@
 // Projects の掲載データ。並び順は index.astro が date の降順で決めるので、追加は順不同でよい。
+// サムネイルは src/assets/projects/ に 16:9 前後の PNG を置いて import する。WebP 化と縮小はビルド時に astro:assets が行う。
+import type { ImageMetadata } from 'astro';
+import cleanroboticsSite from '../../assets/projects/cleanrobotics-site.png';
+import galaxySurvival from '../../assets/projects/galaxy-survival.png';
+
 export interface ProjectEntry {
   org: string;
   /** YYYY.MM。文字列の降順比較で新しい順になる */
@@ -8,7 +13,7 @@ export interface ProjectEntry {
   tech: string;
   links: { label: string; href: string }[];
   /** 省略時は NO IMAGE YET の既定サムネ */
-  thumb?: 'purple';
+  thumb?: ImageMetadata;
 }
 
 export const projectEntries: ProjectEntry[] = [
@@ -41,7 +46,7 @@ export const projectEntries: ProjectEntry[] = [
       { label: 'POST', href: 'https://x.com/_58hack/status/1969732435245224145' },
       { label: 'TOPAZ', href: 'https://topaz.dev/projects/be299aa8d1619240c394' },
     ],
-    thumb: 'purple',
+    thumb: galaxySurvival,
   },
   {
     org: 'CleanRobotics',
@@ -51,5 +56,6 @@ export const projectEntries: ProjectEntry[] = [
       '受託でフロントエンドを設計・実装して納品。スクロール連動アニメーションなどの動的 UI とロゴ制作を担当。',
     tech: 'Next.js / React / Figma',
     links: [{ label: 'SITE', href: 'https://cleanrobotics.jp/' }],
+    thumb: cleanroboticsSite,
   },
 ];

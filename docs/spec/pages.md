@@ -29,6 +29,7 @@ flowchart LR
 - 全ページ右上の日付はビルド日 (Asia/Tokyo、`YYYY.MM.DD`)
 - 読み込み演出は無い。全要素を初描画と同時に出す (段階表示は待たされて見えるため廃止。動きは廊下の歩行とカーソルの点滅だけ)
 - `/projects/` は `projects/_entries.ts` の掲載データを `date` (YYYY.MM) の新しい順に並べ、3 件ずつのページに分ける。FILE 番号は表示順、HUD の件数は総数
+- サムネイルは `_entries.ts` の `thumb` に `src/assets/projects/` の PNG を import して渡す。ビルド時に astro:assets が 352 / 704px 幅の WebP に変換し、16:9 の枠に切り抜いて表示する。`thumb` が無い項目は `NO IMAGE YET` の枠
 - ページ送りは JS を使わず radio + label で行う。radio は視覚的にだけ隠してフォーカス可能にし、← → キーでも切り替わる。URL とスクロール位置は変わらない。CSS が効かない環境では全件が縦に並ぶ
 - `/works/` は `astro.config.mjs` の `redirects` で `/projects/` へ転送 (静的ビルドなので meta refresh + canonical のページ。ホスティングに依存しない)
 - ページタイトルは トップが `Haruworld — Engineer & Designer`、他は `About — Haruworld` の形式
@@ -45,13 +46,13 @@ JS 無効時は `h.minemura.0x [at] gmail.com` と表示され、リンク先は
 
 | 項目 | `/` | 画面 4 ページ |
 |---|---|---|
-| リクエスト数 | 1 | 4 以下 |
+| リクエスト数 | 1 | 4 以下 + 表示中のサムネイル枚数 |
 | 転送量 (gzip) | 25KB 以下 | 45KB 以下 |
 | first paint | 500ms 以下 | 600ms 以下 |
 | load | — | 1,200ms 以下 |
 
 `/` は Latin 2 面のフォントを data URI で HTML に埋め込み 1 リクエストにする。
-画面ページは woff2 3 本を preload する。woff2 はハッシュ付きファイル名で `/_astro/` 配下に出力され、Vercel が `immutable` で配信する。
+画面ページは woff2 3 本を preload する。サムネイルは 1 ページ目の分だけ初期表示で読み込み (eager)、2 ページ目以降は表示したときに読み込む (lazy)。計測は DPR 1 なので 352px 幅 (1 枚 5KB 前後) が選ばれる。woff2 はハッシュ付きファイル名で `/_astro/` 配下に出力され、Vercel が `immutable` で配信する。
 
 ## フォントの再生成
 
