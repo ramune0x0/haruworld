@@ -27,7 +27,7 @@ src/
 ├── assets/fonts/ # サブセット済み woff2 (scripts/subset-fonts.py の生成物。手で編集しない)
 ├── components/   # FontFaces, TopBar, Screen (.astro)
 ├── layouts/      # 共通レイアウト (Layout.astro)
-├── pages/        # index, about, projects, skills, contact
+├── pages/        # index, about, projects/ (index.astro + _entries.ts), skills, contact
 └── styles/       # global.css (共通) / title.css (トップ) / screen.css (画面 4 ページ)
 scripts/          # フォント生成 (subset-fonts.py) / 速度計測 (perf/)
 ```

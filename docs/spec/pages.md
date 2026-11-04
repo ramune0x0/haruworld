@@ -22,12 +22,14 @@ flowchart LR
 |---|---|---|---|
 | `/` | タイトル画面 | なし (左上 `SCENE 00 / TITLE`) | ABOUT / PROJECTS / SKILLS / CONTACT のメニュー |
 | `/about/` | セーブデータ画面 | `PLAYER / LV 19` | Title / Next: Projects |
-| `/projects/` | セーブファイル一覧 (4 件) | `SAVE DATA / 4 FILES` | Back: About / Next: Skills |
+| `/projects/` | セーブファイル一覧 (3 件ずつのページ送り) | `SAVE DATA / 4 FILES` | Back: About / Next: Skills |
 | `/skills/` | ステータス画面 | `STATUS / LV 19` | Back: Projects / Next: Contact |
 | `/contact/` | 選択肢ウィンドウ (連絡先 4 件 + その他 2 件) | `LINKS / 06` | Back: Skills / Title |
 
 - 全ページ右上の日付はビルド日 (Asia/Tokyo、`YYYY.MM.DD`)
 - 読み込み演出は無い。全要素を初描画と同時に出す (段階表示は待たされて見えるため廃止。動きは廊下の歩行とカーソルの点滅だけ)
+- `/projects/` は `projects/_entries.ts` の掲載データを `date` (YYYY.MM) の新しい順に並べ、3 件ずつのページに分ける。FILE 番号は表示順、HUD の件数は総数
+- ページ送りは JS を使わず radio + label で行う。radio は視覚的にだけ隠してフォーカス可能にし、← → キーでも切り替わる。URL とスクロール位置は変わらない。CSS が効かない環境では全件が縦に並ぶ
 - `/works/` は `astro.config.mjs` の `redirects` で `/projects/` へ転送 (静的ビルドなので meta refresh + canonical のページ。ホスティングに依存しない)
 - ページタイトルは トップが `Haruworld — Engineer & Designer`、他は `About — Haruworld` の形式
 
