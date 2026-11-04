@@ -1,0 +1,104 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import TopBar from '../../components/TopBar.astro';
+import Screen from '../../components/Screen.astro';
+import '../../styles/screen.css';
+import { projectEntries } from './_entries';
+
+const PAGE_SIZE = 3;
+
+const entries = [...projectEntries].sort((a, b) => b.date.localeCompare(a.date));
+const pages = Array.from({ length: Math.ceil(entries.length / PAGE_SIZE) }, (_, index) =>
+  entries.slice(index * PAGE_SIZE, (index + 1) * PAGE_SIZE),
+);
+
+// radio の兄弟セレクタで表示ページを選ぶ。ページ数は可変なので規則を生成する
+const pagingRules = pages
+  .map((_, index) => {
+    const n = index + 1;
+    return (
+      `#save-page-${n}:checked ~ #save-view-${n}{display:grid}` +
+      `#save-page-${n}:focus-visible ~ #save-view-${n} .pager{outline:2px solid var(--cursor);outline-offset:3px}`
+    );
+  })
+  .join('');
+---
+
+<Layout title="Projects — Haruworld" variant="screen">
+  <TopBar current="projects" />
+
+  <Screen
+    scene="SCENE 02 / PROJECTS"
+    heading="PROJECTS"
+    hud={`SAVE DATA / ${entries.length} FILES`}
+    label="Projects"
+    commands={[
+      { href: '/about/', label: 'Back: About' },
+      { href: '/skills/', label: 'Next: Skills' },
+    ]}
+  >
+    <div class="stages">
+      <style is:inline set:html={pagingRules}></style>
+      {
+        pages.map((_, index) => (
+          <input
+            class="stages__radio"
+            type="radio"
+            name="save-page"
+            id={`save-page-${index + 1}`}
+            aria-label={`ページ ${index + 1}`}
+            checked={index === 0}
+          />
+        ))
+      }
+      {
+        pages.map((pageEntries, pageIndex) => {
+          const n = pageIndex + 1;
+          return (
+            <section class="stages__page" id={`save-view-${n}`} aria-label={`ページ ${n}`}>
+              {pageEntries.map((entry, entryIndex) => {
+                const fileNumber = pageIndex * PAGE_SIZE + entryIndex + 1;
+                return (
+                  <article class="stage">
+                    <div class="stage__file">
+                      FILE<b>{String(fileNumber).padStart(2, '0')}</b>
+                    </div>
+                    <div class:list={['stage__thumb', { 'stage__thumb--purple': entry.thumb === 'purple' }]}>
+                      {entry.thumb === 'purple' ? 'SCREENSHOT 16:9' : 'NO IMAGE YET'}
+                    </div>
+                    <h3>
+                      <small>{entry.org} / {entry.date}</small>
+                      {entry.title}
+                    </h3>
+                    <p>{entry.description}</p>
+                    <div class="stage__meta">
+                      <span class="stage__tech">{entry.tech}</span>
+                      {entry.links.length > 0 && (
+                        <div class="links">
+                          {entry.links.map((link) => <a href={link.href}>{link.label}</a>)}
+                        </div>
+                      )}
+                    </div>
+                  </article>
+                );
+              })}
+              <div class="pager hud">
+                {n > 1 ? (
+                  <label class="pager__arrow pager__arrow--prev" for={`save-page-${n - 1}`} aria-label="前のページ" />
+                ) : (
+                  <span class="pager__arrow pager__arrow--prev is-disabled" aria-hidden="true" />
+                )}
+                <span>PAGE {n} / {pages.length}</span>
+                {n < pages.length ? (
+                  <label class="pager__arrow" for={`save-page-${n + 1}`} aria-label="次のページ" />
+                ) : (
+                  <span class="pager__arrow is-disabled" aria-hidden="true" />
+                )}
+              </div>
+            </section>
+          );
+        })
+      }
+    </div>
+  </Screen>
+</Layout>
