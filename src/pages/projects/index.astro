@@ -16,10 +16,7 @@ const pages = Array.from({ length: Math.ceil(entries.length / PAGE_SIZE) }, (_, 
 const pagingRules = pages
   .map((_, index) => {
     const n = index + 1;
-    return (
-      `#save-page-${n}:checked ~ #save-view-${n}{display:grid}` +
-      `#save-page-${n}:focus-visible ~ #save-view-${n} .pager{outline:2px solid var(--cursor);outline-offset:3px}`
-    );
+    return `#save-page-${n}:checked ~ #save-view-${n}{display:grid}`;
   })
   .join('');
 ---
@@ -37,13 +34,14 @@ const pagingRules = pages
       { href: '/skills/', label: 'Next: Skills' },
     ]}
   >
-    <div class="stages">
+    <div class="stages" style={`--page-size:${PAGE_SIZE}`}>
       <style is:inline set:html={pagingRules}></style>
       {
         pages.map((_, index) => (
           <input
             class="stages__radio"
             type="radio"
+            autocomplete="off"
             name="save-page"
             id={`save-page-${index + 1}`}
             aria-label={`ページ ${index + 1}`}
