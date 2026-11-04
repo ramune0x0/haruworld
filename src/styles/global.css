@@ -11,6 +11,9 @@
   --font-pixel-jp: 'DotGothic16', 'Noto Sans JP', sans-serif;
   --font-pixel-en: 'Silkscreen', 'DotGothic16', monospace;
   --font-body: 'Hiragino Sans', 'Noto Sans JP', 'Noto Sans CJK JP', 'Yu Gothic', 'Meiryo', system-ui, sans-serif;
+  /* ブラウン管テレビの 4:3 画面の幅。高さに合わせて決め、トップと画面 4 ページで同じ大きさにする。
+     160px は枠の上下にある余白 (padding・ロゴ行・gap で約 128px) より大きく取り、端数でページがスクロールしないようにする */
+  --crt-width: min(100%, calc((100svh - 160px) * 4 / 3));
   color-scheme: dark;
 }
 

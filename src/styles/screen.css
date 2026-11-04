@@ -25,8 +25,8 @@
   position: relative;
   display: grid;
   grid-template-rows: auto 1fr auto;
-  /* ブラウン管テレビの 4:3。高さに合わせて幅を決め、中央に置く。内容が溢れれば縦に伸びる */
-  width: min(100%, calc((100svh - 120px) * 4 / 3));
+  /* 中央に置く。内容が溢れれば縦に伸びる */
+  width: var(--crt-width);
   aspect-ratio: 4 / 3;
   justify-self: center;
   background: #000;
